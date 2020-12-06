@@ -15,7 +15,7 @@ enum ValidationResult {
 }
 
 protocol ValidationServiceType {
-    func validateEmail(_ email: String) -> ValidationResult
+    func validateEmail(_ email: String) -> Observable<ValidationResult>
     func validateUsername(_ username: String) -> Observable<ValidationResult>
     func validatePassword(_ password: String) -> ValidationResult
 }

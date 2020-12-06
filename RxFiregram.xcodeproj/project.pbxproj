@@ -26,6 +26,10 @@
 		D00554BF257A536E00EB5B50 /* FormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554BE257A536E00EB5B50 /* FormTextField.swift */; };
 		D00554C4257A538500EB5B50 /* FormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554C3257A538500EB5B50 /* FormButton.swift */; };
 		D00554C9257A53C400EB5B50 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554C8257A53C400EB5B50 /* UIView+Extensions.swift */; };
+		D02F9704257C4AA100F58B35 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9703257C4AA100F58B35 /* String+Extensions.swift */; };
+		D02F9789257C541700F58B35 /* UILabel+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9788257C541700F58B35 /* UILabel+Rx.swift */; };
+		D02F97A2257D182E00F58B35 /* MockFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F97A1257D182E00F58B35 /* MockFirebaseService.swift */; };
+		D02F97AA257D1B0200F58B35 /* AuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F97A9257D1B0200F58B35 /* AuthData.swift */; };
 		D04A2299257C17D900BEDED2 /* AddProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A2298257C17D900BEDED2 /* AddProfilePictureView.swift */; };
 		D04A22A1257C184300BEDED2 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A0257C184300BEDED2 /* Resources.swift */; };
 		D04A22A6257C18E800BEDED2 /* FormLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A5257C18E800BEDED2 /* FormLabel.swift */; };
@@ -90,6 +94,10 @@
 		D00554BE257A536E00EB5B50 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		D00554C3257A538500EB5B50 /* FormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButton.swift; sourceTree = "<group>"; };
 		D00554C8257A53C400EB5B50 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		D02F9703257C4AA100F58B35 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		D02F9788257C541700F58B35 /* UILabel+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Rx.swift"; sourceTree = "<group>"; };
+		D02F97A1257D182E00F58B35 /* MockFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebaseService.swift; sourceTree = "<group>"; };
+		D02F97A9257D1B0200F58B35 /* AuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthData.swift; sourceTree = "<group>"; };
 		D04A2298257C17D900BEDED2 /* AddProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfilePictureView.swift; sourceTree = "<group>"; };
 		D04A22A0257C184300BEDED2 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		D04A22A5257C18E800BEDED2 /* FormLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabel.swift; sourceTree = "<group>"; };
@@ -169,6 +177,14 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		D02F97A0257D181B00F58B35 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				D02F97A1257D182E00F58B35 /* MockFirebaseService.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		D04A2297257C17CD00BEDED2 /* AddProfilePicture */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +232,7 @@
 				D0AD667C25772EAA00AF6BC1 /* Coordinator */,
 				D0AD667E25772EB500AF6BC1 /* DI */,
 				D0AD667625772DA700AF6BC1 /* Extensions */,
+				D02F97A0257D181B00F58B35 /* Mocks */,
 				D0AD667525772DA300AF6BC1 /* Models */,
 				D00554772579D60800EB5B50 /* Protocols */,
 				D0AD667A25772E7800AF6BC1 /* Scenes */,
@@ -257,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				D04A23A5257C2BF000BEDED2 /* User.swift */,
+				D02F97A9257D1B0200F58B35 /* AuthData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -266,6 +284,7 @@
 			children = (
 				D0AD668525772EE700AF6BC1 /* Rx */,
 				D00554C8257A53C400EB5B50 /* UIView+Extensions.swift */,
+				D02F9703257C4AA100F58B35 /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -352,6 +371,7 @@
 				D005548A2579D76600EB5B50 /* Reactive+Extensions.swift */,
 				D04A22B3257C246C00BEDED2 /* UIButton+Rx.swift */,
 				D00554852579D6FE00EB5B50 /* UIViewController+Rx.swift */,
+				D02F9788257C541700F58B35 /* UILabel+Rx.swift */,
 			);
 			path = Rx;
 			sourceTree = "<group>";
@@ -614,10 +634,13 @@
 				D005546E2579D5F800EB5B50 /* SignUpViewController.swift in Sources */,
 				D00554C4257A538500EB5B50 /* FormButton.swift in Sources */,
 				D00554BA257A536000EB5B50 /* InstagramLogo.swift in Sources */,
+				D02F9789257C541700F58B35 /* UILabel+Rx.swift in Sources */,
+				D02F9704257C4AA100F58B35 /* String+Extensions.swift in Sources */,
 				D00554BF257A536E00EB5B50 /* FormTextField.swift in Sources */,
 				D00554812579D63E00EB5B50 /* BindableType.swift in Sources */,
 				D04A22A1257C184300BEDED2 /* Resources.swift in Sources */,
 				D00554862579D6FE00EB5B50 /* UIViewController+Rx.swift in Sources */,
+				D02F97A2257D182E00F58B35 /* MockFirebaseService.swift in Sources */,
 				D00554732579D60000EB5B50 /* SignUpView.swift in Sources */,
 				D04A2299257C17D900BEDED2 /* AddProfilePictureView.swift in Sources */,
 				D00554692579D5EB00EB5B50 /* SignUpViewModel.swift in Sources */,
@@ -626,6 +649,7 @@
 				D00554C9257A53C400EB5B50 /* UIView+Extensions.swift in Sources */,
 				D04A23A6257C2BF000BEDED2 /* User.swift in Sources */,
 				D00554572579D4AD00EB5B50 /* SceneCoordinator.swift in Sources */,
+				D02F97AA257D1B0200F58B35 /* AuthData.swift in Sources */,
 				D005547C2579D62600EB5B50 /* ViewModelType.swift in Sources */,
 				D005545C2579D53000EB5B50 /* Observable+Extensions.swift in Sources */,
 				D00554482579D48E00EB5B50 /* Scene.swift in Sources */,
@@ -679,6 +703,133 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D02F978D257D164F00F58B35 /* Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TEST;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Test;
+		};
+		D02F978E257D164F00F58B35 /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FC821E94F09AFE8F8921D2E /* Pods-RxFiregram.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TM5A3549LK;
+				INFOPLIST_FILE = RxFiregram/Application/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = justinproductions.RxxFiregram;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TEST;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Test;
+		};
+		D02F978F257D164F00F58B35 /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 170A0C2932A63C864BA9E33D /* Pods-RxFiregramTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TM5A3549LK;
+				INFOPLIST_FILE = RxFiregramTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = justinproductions.RxFiregramTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RxFiregram.app/RxFiregram";
+			};
+			name = Test;
+		};
+		D02F9790257D164F00F58B35 /* Test */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9C4456B1E11689A72103B7DA /* Pods-RxFiregram-RxFiregramUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TM5A3549LK;
+				INFOPLIST_FILE = RxFiregramUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = justinproductions.RxFiregramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RxFiregram;
+			};
+			name = Test;
+		};
 		D0AD665A25772D4900AF6BC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -932,6 +1083,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D0AD665A25772D4900AF6BC1 /* Debug */,
+				D02F978D257D164F00F58B35 /* Test */,
 				D0AD665B25772D4900AF6BC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -941,6 +1093,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D0AD665D25772D4900AF6BC1 /* Debug */,
+				D02F978E257D164F00F58B35 /* Test */,
 				D0AD665E25772D4900AF6BC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -950,6 +1103,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D0AD666025772D4900AF6BC1 /* Debug */,
+				D02F978F257D164F00F58B35 /* Test */,
 				D0AD666125772D4900AF6BC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -959,6 +1113,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D0AD666325772D4900AF6BC1 /* Debug */,
+				D02F9790257D164F00F58B35 /* Test */,
 				D0AD666425772D4900AF6BC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

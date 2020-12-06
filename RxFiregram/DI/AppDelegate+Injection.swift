@@ -6,10 +6,15 @@
 //
 
 import Resolver
-import UIKit
 
 extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
         register { SceneCoordinator() as SceneCoordinatorType }.scope(application)
+        register { ValidationService() as ValidationServiceType }
+        #if TEST
+        register { MockFirebaseService() as FirebaseServiceType }
+        #else
+        register { FirebaseService() as FirebaseServiceType }
+        #endif
     }
 }

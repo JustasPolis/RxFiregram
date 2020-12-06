@@ -31,14 +31,36 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bindInput() -> Input {
 
+        let usernameInput = signUpView.usernameTextField.rx.text.orEmpty.asDriver().distinctUntilChanged()
+        let passwordInput = signUpView.passwordTextField.rx.text.orEmpty.asDriver()
+        let emailInput = signUpView.emailTextField.rx.text.orEmpty.asDriver()
+        let didEndEditingPassword = signUpView.passwordTextField.rx.controlEvent(.editingDidEndOnExit).asDriver()
+        let didEndEditingEmail = signUpView.emailTextField.rx.controlEvent(.editingDidEnd).asDriver()
+        let didEndEditingUsername = signUpView.usernameTextField.rx.controlEvent(.editingDidEnd).asDriver()
+        let signUpButonTap = signUpView.signUpButton.rx.tap.asSignal()
         let signInButtonTap = signUpView.signInButton.rx.tap.asSignal()
 
-        return Input(signInButtonTap: signInButtonTap)
+        return Input(username: usernameInput,
+                     password: passwordInput,
+                     email: emailInput,
+                     signInButtonTap: signInButtonTap,
+                     signUpButtonTap: signUpButonTap,
+                     didEndEditingPassword: didEndEditingPassword,
+                     didEndEditingEmail: didEndEditingEmail,
+                     didEndEditingUsername: didEndEditingUsername)
     }
 
     func bind(output: Output) {
         output.navigateToSignInScene.drive().disposed(by: disposeBag)
         output.signUpEnabled.drive(signUpView.signUpButton.rx.buttonEnabled).disposed(by: disposeBag)
+        output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult).disposed(by: disposeBag)
+
+        signUpView.usernameTextField
+            .rx.controlEvent(.editingDidBegin)
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.signUpView.usernameLabel.text = ""
+            })
     }
 
     func setupKeyboardEvents() {
