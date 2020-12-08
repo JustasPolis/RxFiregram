@@ -1,4 +1,5 @@
 # Uncomment the next line to define a global platform for your project
+project 'RxFiregram', 'Testing' => :debug
 # platform :ios, '12.0'
 plugin 'cocoapods-binary'
 
@@ -8,8 +9,8 @@ target 'RxFiregram' do
  
   pod 'Then', :binary => true
   pod 'SDWebImage', :binary => true
-  pod 'RxSwift', :binary => true
-  pod 'RxCocoa', :binary => true
+  pod 'RxSwift'
+  pod 'RxCocoa'
   pod "RxDataSources", :binary => true
   pod "Resolver", :binary => true
   pod 'RxSwiftExt', :binary => true
@@ -20,14 +21,18 @@ target 'RxFiregram' do
   pod 'Firebase/Auth'          
   pod 'Firebase/Database'    
   pod 'Firebase/Storage'
+  
  
   target 'RxFiregramTests' do
-    inherit! :search_paths
-    # Pods for testing
+     inherit! :search_paths
+    pod 'RxTest'
+    pod 'RxBlocking'
   end
 
   target 'RxFiregramUITests' do
     # Pods for testing
+    pod 'RxTest'
+    pod 'RxBlocking'
   end
 end
 

@@ -36,6 +36,10 @@ final class SignUpViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
+        // validated state with scan
+        // editingdidChange.scan(false) -> true
+        // jei editingdidChange false -> tada nevalidatinam dar kart.
+
         let validatedUsername = input.didEndEditingUsername
             .withLatestFrom(input.username)
             .flatMapLatest { username -> Driver<ValidationResult> in
@@ -49,6 +53,9 @@ final class SignUpViewModel: ViewModelType {
                 self.validationService.validateEmail(email)
                     .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
             }
+
+        let activityIndicator = ActivityIndicator()
+        let isLoading = activityIndicator.asDriver()
 
         let navigateToSignInScene = input.signInButtonTap.flatMap {
             self.sceneCoordinator.transition(to: Scene.signIn)

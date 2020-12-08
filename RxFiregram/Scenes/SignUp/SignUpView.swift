@@ -89,27 +89,10 @@ class SignUpView: UIView {
 
     func setupLayout() {
 
-        let icon = UIImageView().then {
-            $0.image = #imageLiteral(resourceName: "fail_icon").withRenderingMode(.alwaysTemplate)
-            $0.tintColor = UIColor(red: 217/255, green: 30/255, blue: 24/255, alpha: 0.7)
-        }
-
-        /*
-                 let icon2 = UIImageView().then {
-                 $0.image = #imageLiteral(resourceName: "maps-and-flags").withRenderingMode(.alwaysTemplate)
-                 $0.tintColor = UIColor(red: 38/255, green: 166/255, blue: 91/255, alpha: 1)
-                 }
-         */
-
         let ai = UIActivityIndicatorView(style: .gray)
         ai.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         ai.startAnimating()
 
-        emailTextField.rightView = icon
-        emailTextField.rightViewMode = .always
-        emailTextField.layer.borderColor = UIColor(red: 217/255, green: 30/255, blue: 24/255, alpha: 0.7).cgColor
-        emailTextField.layer.borderWidth = 1.0
-        emailTextField.layer.cornerRadius = 5.0
 
         bottomSignInStackView.do {
             $0.add(to: self)

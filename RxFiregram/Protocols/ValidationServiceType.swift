@@ -7,7 +7,7 @@
 
 import RxSwift
 
-enum ValidationResult {
+enum ValidationResult: Equatable {
     case ok
     case failed(message: String)
     case validating

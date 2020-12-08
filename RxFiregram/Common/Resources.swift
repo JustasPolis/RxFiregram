@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Then
 import UIKit
 
 enum Resources {}
@@ -38,6 +39,22 @@ extension Resources.Appearance {
 
         static var transparentProfileIcon: UIImage {
             #imageLiteral(resourceName: "profile_unselected")
+        }
+
+        static var failIcon: UIImageView {
+            let icon = UIImageView().then {
+                $0.image = #imageLiteral(resourceName: "fail_icon").withRenderingMode(.alwaysTemplate)
+                $0.tintColor = Resources.Appearance.Color.red
+            }
+            return icon
+        }
+
+        static var okIcon: UIImageView {
+            let icon = UIImageView().then {
+                $0.image = #imageLiteral(resourceName: "ok_icon").withRenderingMode(.alwaysTemplate)
+                $0.tintColor = Resources.Appearance.Color.green
+            }
+            return icon
         }
     }
 }

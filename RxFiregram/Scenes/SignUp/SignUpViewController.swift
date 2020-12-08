@@ -54,12 +54,17 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         output.navigateToSignInScene.drive().disposed(by: disposeBag)
         output.signUpEnabled.drive(signUpView.signUpButton.rx.buttonEnabled).disposed(by: disposeBag)
         output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult).disposed(by: disposeBag)
+        output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult).disposed(by: disposeBag)
+        signUpView.usernameTextField.rx.controlEvent(.editingChanged).asDriver().drive(onNext: { result in
+            print(result)
+        }).disposed(by: disposeBag)
 
         signUpView.usernameTextField
             .rx.controlEvent(.editingDidBegin)
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.signUpView.usernameLabel.text = ""
+                self?.signUpView.usernameTextField.rightViewMode = .never
             })
     }
 

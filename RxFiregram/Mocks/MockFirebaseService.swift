@@ -24,10 +24,22 @@ class MockFirebaseService: FirebaseServiceType {
     }
 
     func isUsernameAvailable(_ username: String) -> Observable<Bool> {
-        .just(true)
+        let takenUsername = "Mocking"
+        if username == takenUsername {
+            return .just(false)
+        }
+        else {
+            return .just(true)
+        }
     }
 
     func isEmailAvailable(_ email: String) -> Observable<Bool> {
-        .just(true)
+        let takenEmail = "Mocking@gmail.com"
+        if email == takenEmail {
+            return .just(false)
+        }
+        else {
+            return .just(true)
+        }
     }
 }
