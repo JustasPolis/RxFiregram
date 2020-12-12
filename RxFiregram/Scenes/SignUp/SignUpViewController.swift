@@ -39,6 +39,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         let didEndEditingUsername = signUpView.usernameTextField.rx.controlEvent(.editingDidEnd).asDriver()
         let signUpButonTap = signUpView.signUpButton.rx.tap.asSignal()
         let signInButtonTap = signUpView.signInButton.rx.tap.asSignal()
+        let usernameChanged = signUpView.usernameTextField.rx.controlEvent(.editingChanged).asDriver()
 
         return Input(username: usernameInput,
                      password: passwordInput,
@@ -47,7 +48,8 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                      signUpButtonTap: signUpButonTap,
                      didEndEditingPassword: didEndEditingPassword,
                      didEndEditingEmail: didEndEditingEmail,
-                     didEndEditingUsername: didEndEditingUsername)
+                     didEndEditingUsername: didEndEditingUsername,
+                     usernameChanged: usernameChanged)
     }
 
     func bind(output: Output) {
@@ -55,7 +57,8 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         output.signUpEnabled.drive(signUpView.signUpButton.rx.buttonEnabled).disposed(by: disposeBag)
         output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult).disposed(by: disposeBag)
         output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult).disposed(by: disposeBag)
-        signUpView.usernameTextField.rx.controlEvent(.editingChanged).asDriver().drive(onNext: { result in
+
+        output.validatedUsername.drive(onNext: { result in
             print(result)
         }).disposed(by: disposeBag)
 
@@ -65,7 +68,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             .drive(onNext: { [weak self] in
                 self?.signUpView.usernameLabel.text = ""
                 self?.signUpView.usernameTextField.rightViewMode = .never
-            })
+            }).disposed(by: disposeBag)
     }
 
     func setupKeyboardEvents() {

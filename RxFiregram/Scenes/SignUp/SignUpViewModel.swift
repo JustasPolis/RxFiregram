@@ -25,6 +25,7 @@ final class SignUpViewModel: ViewModelType {
         let didEndEditingPassword: Driver<Void>
         let didEndEditingEmail: Driver<Void>
         let didEndEditingUsername: Driver<Void>
+        let usernameChanged: Driver<Void>
     }
 
     struct Output {
@@ -36,18 +37,27 @@ final class SignUpViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        // validated state with scan
-        // editingdidChange.scan(false) -> true
-        // jei editingdidChange false -> tada nevalidatinam dar kart.
+
+        let usernameInputChanged = input.didEndEditingUsername
+            .withLatestFrom(input.username)
+            .withPrevious()
+            .didChange()
 
         let validatedUsername = input.didEndEditingUsername
+            .take(if: usernameInputChanged)
             .withLatestFrom(input.username)
             .flatMapLatest { username -> Driver<ValidationResult> in
                 self.validationService.validateUsername(username)
                     .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
             }
 
+        let emailInputChanged = input.didEndEditingEmail
+            .withLatestFrom(input.email)
+            .withPrevious()
+            .didChange()
+
         let validatedEmail = input.didEndEditingEmail
+            .take(if: emailInputChanged)
             .withLatestFrom(input.email)
             .flatMapLatest { email in
                 self.validationService.validateEmail(email)
