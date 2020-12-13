@@ -5,6 +5,7 @@
 //  Created by Justin on 2020-12-04.
 //
 
+import FirebaseAuth
 import Resolver
 import RxCocoa
 import RxSwift
@@ -20,12 +21,11 @@ final class SignUpViewModel: ViewModelType {
         let username: Driver<String>
         let password: Driver<String>
         let email: Driver<String>
-        let signInButtonTap: Signal<Void>
-        let signUpButtonTap: Signal<Void>
+        let signInButtonTap: Driver<Void>
+        let signUpButtonTap: Driver<Void>
         let didEndEditingPassword: Driver<Void>
         let didEndEditingEmail: Driver<Void>
         let didEndEditingUsername: Driver<Void>
-        let usernameChanged: Driver<Void>
     }
 
     struct Output {
@@ -33,10 +33,12 @@ final class SignUpViewModel: ViewModelType {
         let signUpEnabled: Driver<Bool>
         let validatedUsername: Driver<ValidationResult>
         let validatedEmail: Driver<ValidationResult>
+        let signUp: Driver<Void>
+        let authError: Driver<AuthErrorCode?>
+        let isLoading: Driver<Bool>
     }
 
     func transform(input: Input) -> Output {
-
 
         let usernameInputChanged = input.didEndEditingUsername
             .withLatestFrom(input.username)
@@ -65,17 +67,45 @@ final class SignUpViewModel: ViewModelType {
             }
 
         let activityIndicator = ActivityIndicator()
-        let isLoading = activityIndicator.asDriver()
+        let errorTracker = ErrorTracker()
 
         let navigateToSignInScene = input.signInButtonTap.flatMap {
             self.sceneCoordinator.transition(to: Scene.signIn)
         }
 
-        let signUpEnabled = Observable.just(true).asDriverOnErrorJustComplete()
+        let signUpTrigger = Driver.merge(input.signUpButtonTap, input.didEndEditingPassword)
+        let emailAndPassword = Driver.combineLatest(input.email, input.password)
+
+        let signUp = signUpTrigger
+            .withLatestFrom(emailAndPassword)
+            .flatMap { email, password in
+                self.firebaseService.signUp(email: email, password: password)
+                    .trackActivity(activityIndicator)
+                    .trackError(errorTracker)
+                    .asDriverOnErrorJustComplete()
+            }.withLatestFrom(input.username) { authData, username in
+                User(id: authData.id, username: username, profileImageUrl: "", email: authData.email ?? "")
+            }.flatMap { user in
+                self.firebaseService.storeUserInformation(user)
+                    .trackActivity(activityIndicator)
+                    .asDriverOnErrorJustComplete()
+            }
+
+        let authError = errorTracker.asDriver()
+            .map { error in
+                AuthErrorCode(rawValue: error._code)
+            }
+
+        let isLoading = Driver.just(true)
+
+        let signUpEnabled = Driver.just(false)
 
         return Output(navigateToSignInScene: navigateToSignInScene,
                       signUpEnabled: signUpEnabled,
                       validatedUsername: validatedUsername,
-                      validatedEmail: validatedEmail)
+                      validatedEmail: validatedEmail,
+                      signUp: signUp,
+                      authError: authError,
+                      isLoading: isLoading)
     }
 }

@@ -23,4 +23,8 @@ class FormButton: UIButton {
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         self.setTitleColor(.white, for: .normal)
     }
+
+    func test() {
+        print("hello")
+    }
 }

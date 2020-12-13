@@ -55,7 +55,7 @@ class SignUpView: UIView {
         $0.keyboardType = .default
     }
 
-    let signUpButton = FormButton(type: .custom).then {
+    let signUpButton = FormButton(type: .system).then {
         $0.setTitle("Sign Up", for: .normal)
     }
 
@@ -92,7 +92,6 @@ class SignUpView: UIView {
         let ai = UIActivityIndicatorView(style: .gray)
         ai.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         ai.startAnimating()
-
 
         bottomSignInStackView.do {
             $0.add(to: self)
