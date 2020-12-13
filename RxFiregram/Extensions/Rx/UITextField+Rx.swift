@@ -35,4 +35,10 @@ extension Reactive where Base: UITextField {
             textField.isEnabled = !value
         }
     }
+
+    var onEditingChanged: Binder<Void> {
+        Binder(base) { textField, _ in
+            textField.rightViewMode = .never
+        }
+    }
 }

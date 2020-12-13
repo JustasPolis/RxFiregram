@@ -54,20 +54,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bind(output: Output) {
 
-        output.navigateToSignInScene.drive().disposed(by: disposeBag)
-        output.signUp.drive().disposed(by: disposeBag)
-        output.authError.unwrap().drive(signUpView.rx.authErrors).disposed(by: disposeBag)
-
-        output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult).disposed(by: disposeBag)
-        output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult).disposed(by: disposeBag)
-        output.validatedEmail.drive(signUpView.emailTextField.rx.validationResult).disposed(by: disposeBag)
-        output.validatedEmail.drive(signUpView.emailLabel.rx.validationResult).disposed(by: disposeBag)
-
-        output.isLoading.drive(signUpView.usernameTextField.rx.isDisabled).disposed(by: disposeBag)
-        output.isLoading.drive(signUpView.emailTextField.rx.isDisabled).disposed(by: disposeBag)
-        output.isLoading.drive(signUpView.passwordTextField.rx.isDisabled).disposed(by: disposeBag)
-        output.isLoading.drive(signUpView.signInButton.rx.isDisabled).disposed(by: disposeBag)
-
         let loadingState = output.isLoading
             .filter { $0 != false }
             .mapTo(ButtonState.loading)
@@ -80,36 +66,38 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             .startWith(ButtonState.disabled)
             .drive(signUpView.signUpButton.rx.buttonState)
             .disposed(by: disposeBag)
+
+        disposeBag.insert(
+            output.navigateToSignInScene.drive(),
+            output.signUp.drive(),
+            output.authError.unwrap().drive(signUpView.rx.authErrors),
+
+            output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult),
+            output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult),
+            output.validatedEmail.drive(signUpView.emailTextField.rx.validationResult),
+            output.validatedEmail.drive(signUpView.emailLabel.rx.validationResult),
+
+            output.isLoading.drive(signUpView.usernameTextField.rx.isDisabled),
+            output.isLoading.drive(signUpView.emailTextField.rx.isDisabled),
+            output.isLoading.drive(signUpView.passwordTextField.rx.isDisabled),
+            output.isLoading.drive(signUpView.signInButton.rx.isDisabled)
+        )
     }
 
     func setupTextFieldEvents() {
 
-        signUpView.usernameTextField
-            .rx.controlEvent(.editingChanged)
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.signUpView.usernameLabel.text = ""
-                self?.signUpView.usernameTextField.rightViewMode = .never
-            })
-            .disposed(by: disposeBag)
+        let onUsernameEditingChanged = signUpView.usernameTextField.rx.controlEvent(.editingChanged).asDriver()
+        let onPasswordEditingChanged = signUpView.passwordTextField.rx.controlEvent(.editingChanged).asDriver()
+        let onEmailEditingChanged = signUpView.emailTextField.rx.controlEvent(.editingChanged).asDriver()
 
-        signUpView.passwordTextField
-            .rx.controlEvent(.editingChanged)
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.signUpView.passwordLabel.text = ""
-                self?.signUpView.passwordTextField.rightViewMode = .never
-            })
-            .disposed(by: disposeBag)
-
-        signUpView.emailTextField
-            .rx.controlEvent(.editingChanged)
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.signUpView.emailLabel.text = ""
-                self?.signUpView.emailTextField.rightViewMode = .never
-            })
-            .disposed(by: disposeBag)
+        disposeBag.insert(
+            onUsernameEditingChanged.drive(signUpView.usernameTextField.rx.onEditingChanged),
+            onUsernameEditingChanged.drive(signUpView.usernameLabel.rx.onEditingChanged),
+            onEmailEditingChanged.drive(signUpView.emailTextField.rx.onEditingChanged),
+            onEmailEditingChanged.drive(signUpView.emailLabel.rx.onEditingChanged),
+            onPasswordEditingChanged.drive(signUpView.passwordTextField.rx.onEditingChanged),
+            onPasswordEditingChanged.drive(signUpView.passwordLabel.rx.onEditingChanged)
+        )
     }
 
     func setupKeyboardEvents() {
@@ -132,12 +120,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                 }
             }).disposed(by: disposeBag)
     }
-}
-
-enum TextField {
-    case usernameTextField
-    case emailTextField
-    case passwordTextField
 }
 
 extension Reactive where Base: SignUpView {

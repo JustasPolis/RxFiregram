@@ -19,4 +19,10 @@ extension Reactive where Base: UILabel {
             }
         }
     }
+
+    var onEditingChanged: Binder<Void> {
+        Binder(base) { label, _ in
+            label.text = ""
+        }
+    }
 }
