@@ -29,4 +29,10 @@ extension Reactive where Base: UITextField {
             }
         }
     }
+
+    var isDisabled: Binder<Bool> {
+        Binder(base) { textField, value in
+            textField.isEnabled = !value
+        }
+    }
 }

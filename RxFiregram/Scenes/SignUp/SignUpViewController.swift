@@ -55,12 +55,18 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
     func bind(output: Output) {
 
         output.navigateToSignInScene.drive().disposed(by: disposeBag)
-        output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult).disposed(by: disposeBag)
-        output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult).disposed(by: disposeBag)
         output.signUp.drive().disposed(by: disposeBag)
         output.authError.unwrap().drive(signUpView.rx.authErrors).disposed(by: disposeBag)
 
-        // SignUpButton state
+        output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult).disposed(by: disposeBag)
+        output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult).disposed(by: disposeBag)
+        output.validatedEmail.drive(signUpView.emailTextField.rx.validationResult).disposed(by: disposeBag)
+        output.validatedEmail.drive(signUpView.emailLabel.rx.validationResult).disposed(by: disposeBag)
+
+        output.isLoading.drive(signUpView.usernameTextField.rx.isDisabled).disposed(by: disposeBag)
+        output.isLoading.drive(signUpView.emailTextField.rx.isDisabled).disposed(by: disposeBag)
+        output.isLoading.drive(signUpView.passwordTextField.rx.isDisabled).disposed(by: disposeBag)
+        output.isLoading.drive(signUpView.signInButton.rx.isDisabled).disposed(by: disposeBag)
 
         let loadingState = output.isLoading
             .filter { $0 != false }
@@ -81,22 +87,28 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         signUpView.usernameTextField
             .rx.controlEvent(.editingChanged)
             .asDriver()
-            .map { _ in TextField.usernameTextField }
-            .drive(signUpView.rx.onEditingChanged)
+            .drive(onNext: { [weak self] _ in
+                self?.signUpView.usernameLabel.text = ""
+                self?.signUpView.usernameTextField.rightViewMode = .never
+            })
             .disposed(by: disposeBag)
 
         signUpView.passwordTextField
             .rx.controlEvent(.editingChanged)
             .asDriver()
-            .map { _ in TextField.passwordTextField }
-            .drive(signUpView.rx.onEditingChanged)
+            .drive(onNext: { [weak self] _ in
+                self?.signUpView.passwordLabel.text = ""
+                self?.signUpView.passwordTextField.rightViewMode = .never
+            })
             .disposed(by: disposeBag)
 
         signUpView.emailTextField
             .rx.controlEvent(.editingChanged)
             .asDriver()
-            .map { _ in TextField.emailTextField }
-            .drive(signUpView.rx.onEditingChanged)
+            .drive(onNext: { [weak self] _ in
+                self?.signUpView.emailLabel.text = ""
+                self?.signUpView.emailTextField.rightViewMode = .never
+            })
             .disposed(by: disposeBag)
     }
 
@@ -136,22 +148,6 @@ extension Reactive where Base: SignUpView {
                     view.emailLabel.text = "Tests"
                 default:
                     view.emailLabel.text = "Test"
-            }
-        }
-    }
-
-    var onEditingChanged: Binder<TextField> {
-        Binder<TextField>(base) { view, value in
-            switch value {
-                case .usernameTextField:
-                    view.usernameLabel.text = ""
-                    view.usernameTextField.rightViewMode = .never
-                case .emailTextField:
-                    view.emailLabel.text = ""
-                    view.emailTextField.rightViewMode = .never
-                case .passwordTextField:
-                    view.passwordLabel.text = ""
-                    view.passwordTextField.rightViewMode = .never
             }
         }
     }

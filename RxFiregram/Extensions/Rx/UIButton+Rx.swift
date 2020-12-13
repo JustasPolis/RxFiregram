@@ -38,4 +38,10 @@ extension Reactive where Base: UIButton {
             }
         }
     }
+
+    var isDisabled: Binder<Bool> {
+        Binder(base) { button, value in
+            button.isEnabled = !value
+        }
+    }
 }
