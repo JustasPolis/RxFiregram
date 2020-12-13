@@ -14,6 +14,17 @@ enum ValidationResult: Equatable {
     case empty
 }
 
+extension ValidationResult {
+    var isValid: Bool {
+        switch self {
+            case .ok:
+                return true
+            default:
+                return false
+        }
+    }
+}
+
 protocol ValidationServiceType {
     func validateEmail(_ email: String) -> Observable<ValidationResult>
     func validateUsername(_ username: String) -> Observable<ValidationResult>

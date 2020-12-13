@@ -45,13 +45,13 @@ class ValidationService: ValidationServiceType {
     }
 
     func validatePassword(_ password: String) -> ValidationResult {
-        let minPasswordCount = 5
+        let minPasswordCount = 6
         let numberOfCharacters = password.count
         if password.isEmpty {
             return .empty
         }
         if numberOfCharacters < minPasswordCount {
-            return .failed(message: "Password must be at least \(minPasswordCount) characters")
+            return .failed(message: "Password must be at least \(minPasswordCount) characters long")
         }
         return .ok
     }

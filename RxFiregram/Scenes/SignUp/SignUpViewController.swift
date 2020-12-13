@@ -36,17 +36,17 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         let usernameInput = signUpView.usernameTextField.rx.text.orEmpty.asDriver().distinctUntilChanged()
         let passwordInput = signUpView.passwordTextField.rx.text.orEmpty.asDriver()
         let emailInput = signUpView.emailTextField.rx.text.orEmpty.asDriver()
-        let didEndEditingPassword = signUpView.passwordTextField.rx.controlEvent(.editingDidEndOnExit).asDriver()
+        let didEndEditingPassword = signUpView.passwordTextField.rx.controlEvent(.editingDidEnd).asDriver()
         let didEndEditingEmail = signUpView.emailTextField.rx.controlEvent(.editingDidEnd).asDriver()
         let didEndEditingUsername = signUpView.usernameTextField.rx.controlEvent(.editingDidEnd).asDriver()
-        let signUpButonTap = signUpView.signUpButton.rx.tap.asDriver()
+        let signUpTrigger = Driver.merge(signUpView.signUpButton.rx.tap.asDriver(), signUpView.passwordTextField.rx.controlEvent(.editingDidEndOnExit).asDriver())
         let signInButtonTap = signUpView.signInButton.rx.tap.asDriver()
 
         return Input(username: usernameInput,
                      password: passwordInput,
                      email: emailInput,
                      signInButtonTap: signInButtonTap,
-                     signUpButtonTap: signUpButonTap,
+                     signUpTrigger: signUpTrigger,
                      didEndEditingPassword: didEndEditingPassword,
                      didEndEditingEmail: didEndEditingEmail,
                      didEndEditingUsername: didEndEditingUsername)
@@ -54,28 +54,39 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bind(output: Output) {
 
+        output.isLoading.drive(onNext: { loading in
+            print(loading)
+        })
+
         let loadingState = output.isLoading
             .filter { $0 != false }
             .mapTo(ButtonState.loading)
+
+        let defaultState = Driver.merge(output.isLoading, output.signUpEnabled)
+            .filter { $0 != true }
+            .mapTo(ButtonState.disabled)
 
         let enabledState = output.signUpEnabled
             .filter { $0 != false }
             .mapTo(ButtonState.enabled)
 
-        Driver.merge(loadingState, enabledState)
-            .startWith(ButtonState.disabled)
+        Driver.merge(defaultState, loadingState, enabledState)
             .drive(signUpView.signUpButton.rx.buttonState)
             .disposed(by: disposeBag)
 
         disposeBag.insert(
             output.navigateToSignInScene.drive(),
             output.signUp.drive(),
-            output.authError.unwrap().drive(signUpView.rx.authErrors),
+            output.authError.unwrap().drive(onNext: { error in
+                print(error)
+            }),
 
             output.validatedUsername.drive(signUpView.usernameLabel.rx.validationResult),
             output.validatedUsername.drive(signUpView.usernameTextField.rx.validationResult),
             output.validatedEmail.drive(signUpView.emailTextField.rx.validationResult),
             output.validatedEmail.drive(signUpView.emailLabel.rx.validationResult),
+            output.validatedPassword.drive(signUpView.passwordTextField.rx.validationResult),
+            output.validatedPassword.drive(signUpView.passwordLabel.rx.validationResult),
 
             output.isLoading.drive(signUpView.usernameTextField.rx.isDisabled),
             output.isLoading.drive(signUpView.emailTextField.rx.isDisabled),

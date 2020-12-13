@@ -55,7 +55,7 @@ class FirebaseService: FirebaseServiceType {
             .reference()
             .child("users")
             .queryOrdered(byChild: "username")
-            .queryEqual(toValue: username)
+            .queryEqual(toValue: username.lowercased())
             .rx
             .observeSingleEvent(.value)
             .asObservable()

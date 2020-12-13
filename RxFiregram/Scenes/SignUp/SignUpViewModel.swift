@@ -22,7 +22,7 @@ final class SignUpViewModel: ViewModelType {
         let password: Driver<String>
         let email: Driver<String>
         let signInButtonTap: Driver<Void>
-        let signUpButtonTap: Driver<Void>
+        let signUpTrigger: Driver<Void>
         let didEndEditingPassword: Driver<Void>
         let didEndEditingEmail: Driver<Void>
         let didEndEditingUsername: Driver<Void>
@@ -33,9 +33,18 @@ final class SignUpViewModel: ViewModelType {
         let signUpEnabled: Driver<Bool>
         let validatedUsername: Driver<ValidationResult>
         let validatedEmail: Driver<ValidationResult>
+        let validatedPassword: Driver<ValidationResult>
         let signUp: Driver<Void>
         let authError: Driver<AuthErrorCode?>
         let isLoading: Driver<Bool>
+    }
+
+    func signUp(email: String, password: String, username: String) -> Observable<Void> {
+        self.firebaseService.signUp(email: email, password: password).map { authData in
+            User(id: authData.id, username: username.lowercased(), profileImageUrl: "", email: authData.email ?? "")
+        }.flatMap { user in
+            self.firebaseService.storeUserInformation(user)
+        }
     }
 
     func transform(input: Input) -> Output {
@@ -66,44 +75,58 @@ final class SignUpViewModel: ViewModelType {
                     .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
             }
 
+        let passwordInputChanged = input.didEndEditingPassword
+            .withLatestFrom(input.password)
+            .withPrevious()
+            .didChange()
+
+        let validatedPassword = input.didEndEditingPassword
+            .take(if: passwordInputChanged)
+            .withLatestFrom(input.password)
+            .map { password in
+                self.validationService.validatePassword(password)
+            }
+
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
-
-        let navigateToSignInScene = input.signInButtonTap.flatMap {
-            self.sceneCoordinator.transition(to: Scene.signIn)
-        }
-
-        let signUpTrigger = Driver.merge(input.signUpButtonTap, input.didEndEditingPassword)
-        let emailAndPassword = Driver.combineLatest(input.email, input.password)
-
-        let signUp = signUpTrigger
-            .withLatestFrom(emailAndPassword)
-            .flatMap { email, password in
-                self.firebaseService.signUp(email: email, password: password)
-                    .trackActivity(activityIndicator)
-                    .trackError(errorTracker)
-                    .asDriverOnErrorJustComplete()
-            }.withLatestFrom(input.username) { authData, username in
-                User(id: authData.id, username: username, profileImageUrl: "", email: authData.email ?? "")
-            }.flatMap { user in
-                self.firebaseService.storeUserInformation(user)
-                    .trackActivity(activityIndicator)
-                    .asDriverOnErrorJustComplete()
-            }
 
         let authError = errorTracker.asDriver()
             .map { error in
                 AuthErrorCode(rawValue: error._code)
             }
 
-        let isLoading = Driver.just(true)
+        let isLoading = activityIndicator.asDriver()
 
-        let signUpEnabled = Driver.just(false)
+        let navigateToSignInScene = input.signInButtonTap.flatMap {
+            self.sceneCoordinator.transition(to: Scene.signIn)
+        }
+
+        let textFieldInputs = Driver.combineLatest(input.email, input.password, input.username)
+
+        let signUp = input.signUpTrigger
+            .withLatestFrom(textFieldInputs)
+            .flatMap { email, password, username in
+                self.signUp(email: email, password: password, username: username)
+                    .trackActivity(activityIndicator)
+                    .trackError(errorTracker)
+                    .asDriverOnErrorJustComplete()
+            }
+
+        // username unique paziuret ar galim padaryt checka firebase DB
+        
+        let signUpEnabled = Driver.combineLatest(validatedUsername, validatedEmail, validatedPassword)
+            { username, email, password in
+                username.isValid &&
+                    email.isValid &&
+                    password.isValid
+            }
+            .distinctUntilChanged()
 
         return Output(navigateToSignInScene: navigateToSignInScene,
                       signUpEnabled: signUpEnabled,
                       validatedUsername: validatedUsername,
                       validatedEmail: validatedEmail,
+                      validatedPassword: validatedPassword,
                       signUp: signUp,
                       authError: authError,
                       isLoading: isLoading)

@@ -89,10 +89,6 @@ class SignUpView: UIView {
 
     func setupLayout() {
 
-        let ai = UIActivityIndicatorView(style: .gray)
-        ai.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        ai.startAnimating()
-
         bottomSignInStackView.do {
             $0.add(to: self)
             $0.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
