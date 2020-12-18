@@ -20,8 +20,8 @@ extension Scene: TargetScene {
     var transition: SceneTransitionType {
         switch self {
             case .signUp:
-                let signUpVM = SignUpViewModel()
-                let signUpVC = UINavigationController(rootViewController: SignUpViewController(viewModel: signUpVM))
+                let signUpVM = TestViewModel()
+                let signUpVC = UINavigationController(rootViewController: TestViewController(viewModel: signUpVM))
                 return .root(signUpVC)
             case .signIn:
                 let signInVC = SignInViewController()

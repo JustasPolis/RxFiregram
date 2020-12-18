@@ -35,15 +35,21 @@
 		D02F9C84257F030500F58B35 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9C83257F030500F58B35 /* ActivityIndicator.swift */; };
 		D02F9C89257F031E00F58B35 /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9C88257F031E00F58B35 /* ErrorTracker.swift */; };
 		D02F9C8E257F04C900F58B35 /* UITextField+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9C8D257F04C900F58B35 /* UITextField+Rx.swift */; };
+		D0342E0E258B005200D75599 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E0D258B005200D75599 /* EmailView.swift */; };
+		D0342E13258B006800D75599 /* UsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E12258B006800D75599 /* UsernameView.swift */; };
+		D0342E18258B007000D75599 /* PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E17258B007000D75599 /* PasswordView.swift */; };
+		D0342E2E258C2E8600D75599 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E2D258C2E8600D75599 /* TestViewController.swift */; };
+		D0342E33258C2F0D00D75599 /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E32258C2F0D00D75599 /* TestViewModel.swift */; };
+		D0342E3B258C3FA600D75599 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E3A258C3FA600D75599 /* BackButton.swift */; };
+		D0342E46258C40D900D75599 /* FormLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E45258C40D900D75599 /* FormLabel.swift */; };
+		D0342E4B258C413000D75599 /* FormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E4A258C413000D75599 /* FormView.swift */; };
 		D04A2299257C17D900BEDED2 /* AddProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A2298257C17D900BEDED2 /* AddProfilePictureView.swift */; };
 		D04A22A1257C184300BEDED2 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A0257C184300BEDED2 /* Resources.swift */; };
-		D04A22A6257C18E800BEDED2 /* FormLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A5257C18E800BEDED2 /* FormLabel.swift */; };
+		D04A22A6257C18E800BEDED2 /* ErrorLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */; };
 		D04A22AC257C205F00BEDED2 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22AB257C205F00BEDED2 /* SignInViewController.swift */; };
 		D04A22B4257C246C00BEDED2 /* UIButton+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22B3257C246C00BEDED2 /* UIButton+Rx.swift */; };
 		D04A22B9257C27C300BEDED2 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22B8257C27C300BEDED2 /* FirebaseService.swift */; };
-		D04A22BE257C27CA00BEDED2 /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22BD257C27CA00BEDED2 /* ValidationService.swift */; };
 		D04A22C3257C27D300BEDED2 /* FirebaseServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22C2257C27D300BEDED2 /* FirebaseServiceType.swift */; };
-		D04A22C8257C27DB00BEDED2 /* ValidationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22C7257C27DB00BEDED2 /* ValidationServiceType.swift */; };
 		D04A239D257C2B9F00BEDED2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D04A239C257C2B9F00BEDED2 /* GoogleService-Info.plist */; };
 		D04A23A6257C2BF000BEDED2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A23A5257C2BF000BEDED2 /* User.swift */; };
 		D0AD663625772D4700AF6BC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AD663525772D4700AF6BC1 /* AppDelegate.swift */; };
@@ -52,6 +58,8 @@
 		D0AD664D25772D4900AF6BC1 /* RxFiregramTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AD664C25772D4900AF6BC1 /* RxFiregramTests.swift */; };
 		D0AD665825772D4900AF6BC1 /* RxFiregramUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AD665725772D4900AF6BC1 /* RxFiregramUITests.swift */; };
 		D0AD668125772ED700AF6BC1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AD668025772ED700AF6BC1 /* ViewController.swift */; };
+		D0B41B9F2586910D00DDE0FA /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B41B9E2586910D00DDE0FA /* ValidationService.swift */; };
+		D0B41BA42586913800DDE0FA /* ValidationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B41BA32586913800DDE0FA /* ValidationServiceType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,15 +115,21 @@
 		D02F9C83257F030500F58B35 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		D02F9C88257F031E00F58B35 /* ErrorTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		D02F9C8D257F04C900F58B35 /* UITextField+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Rx.swift"; sourceTree = "<group>"; };
+		D0342E0D258B005200D75599 /* EmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
+		D0342E12258B006800D75599 /* UsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameView.swift; sourceTree = "<group>"; };
+		D0342E17258B007000D75599 /* PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordView.swift; sourceTree = "<group>"; };
+		D0342E2D258C2E8600D75599 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		D0342E32258C2F0D00D75599 /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
+		D0342E3A258C3FA600D75599 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		D0342E45258C40D900D75599 /* FormLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabel.swift; sourceTree = "<group>"; };
+		D0342E4A258C413000D75599 /* FormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormView.swift; sourceTree = "<group>"; };
 		D04A2298257C17D900BEDED2 /* AddProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfilePictureView.swift; sourceTree = "<group>"; };
 		D04A22A0257C184300BEDED2 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
-		D04A22A5257C18E800BEDED2 /* FormLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabel.swift; sourceTree = "<group>"; };
+		D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLabel.swift; sourceTree = "<group>"; };
 		D04A22AB257C205F00BEDED2 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		D04A22B3257C246C00BEDED2 /* UIButton+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Rx.swift"; sourceTree = "<group>"; };
 		D04A22B8257C27C300BEDED2 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
-		D04A22BD257C27CA00BEDED2 /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
 		D04A22C2257C27D300BEDED2 /* FirebaseServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseServiceType.swift; sourceTree = "<group>"; };
-		D04A22C7257C27DB00BEDED2 /* ValidationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationServiceType.swift; sourceTree = "<group>"; };
 		D04A239C257C2B9F00BEDED2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D04A23A5257C2BF000BEDED2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D0AD663225772D4700AF6BC1 /* RxFiregram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxFiregram.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +144,8 @@
 		D0AD665725772D4900AF6BC1 /* RxFiregramUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxFiregramUITests.swift; sourceTree = "<group>"; };
 		D0AD665925772D4900AF6BC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0AD668025772ED700AF6BC1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D0B41B9E2586910D00DDE0FA /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
+		D0B41BA32586913800DDE0FA /* ValidationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationServiceType.swift; sourceTree = "<group>"; };
 		DCEE196654A1AF15BCC0C430 /* Pods-RxFiregram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxFiregram.debug.xcconfig"; path = "Target Support Files/Pods-RxFiregram/Pods-RxFiregram.debug.xcconfig"; sourceTree = "<group>"; };
 		E136917C49DC152C07BA19DE /* Pods-RxFiregram-RxFiregramUITests.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxFiregram-RxFiregramUITests.testing.xcconfig"; path = "Target Support Files/Pods-RxFiregram-RxFiregramUITests/Pods-RxFiregram-RxFiregramUITests.testing.xcconfig"; sourceTree = "<group>"; };
 		EE0B71BC1A2C3673CA8A3942 /* Pods-RxFiregramTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxFiregramTests.test.xcconfig"; path = "Target Support Files/Pods-RxFiregramTests/Pods-RxFiregramTests.test.xcconfig"; sourceTree = "<group>"; };
@@ -201,8 +217,8 @@
 				D04A22C2257C27D300BEDED2 /* FirebaseServiceType.swift */,
 				D00554512579D4A300EB5B50 /* SceneCoordinatorType.swift */,
 				D005544C2579D49800EB5B50 /* SceneTransitionType.swift */,
-				D04A22C7257C27DB00BEDED2 /* ValidationServiceType.swift */,
 				D005547B2579D62600EB5B50 /* ViewModelType.swift */,
+				D0B41BA32586913800DDE0FA /* ValidationServiceType.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -213,6 +229,24 @@
 				D02F97A1257D182E00F58B35 /* MockFirebaseService.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		D0342E06258B003500D75599 /* Landing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Landing;
+			sourceTree = "<group>";
+		};
+		D0342E1C258B007200D75599 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D0342E0D258B005200D75599 /* EmailView.swift */,
+				D0342E4A258C413000D75599 /* FormView.swift */,
+				D0342E17258B007000D75599 /* PasswordView.swift */,
+				D0342E12258B006800D75599 /* UsernameView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D04A2297257C17CD00BEDED2 /* AddProfilePicture */ = {
@@ -343,6 +377,7 @@
 		D0AD667A25772E7800AF6BC1 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D0342E06258B003500D75599 /* Landing */,
 				D04A2297257C17CD00BEDED2 /* AddProfilePicture */,
 				D04A22AA257C204D00BEDED2 /* SignIn */,
 				D0AD667F25772ECB00AF6BC1 /* SignUp */,
@@ -354,7 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				D04A22B8257C27C300BEDED2 /* FirebaseService.swift */,
-				D04A22BD257C27CA00BEDED2 /* ValidationService.swift */,
+				D0B41B9E2586910D00DDE0FA /* ValidationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -371,8 +406,10 @@
 		D0AD667D25772EB100AF6BC1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D0342E3A258C3FA600D75599 /* BackButton.swift */,
+				D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */,
 				D00554C3257A538500EB5B50 /* FormButton.swift */,
-				D04A22A5257C18E800BEDED2 /* FormLabel.swift */,
+				D0342E45258C40D900D75599 /* FormLabel.swift */,
 				D00554BE257A536E00EB5B50 /* FormTextField.swift */,
 				D00554B9257A536000EB5B50 /* InstagramLogo.swift */,
 			);
@@ -390,9 +427,12 @@
 		D0AD667F25772ECB00AF6BC1 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				D0342E1C258B007200D75599 /* Views */,
 				D00554722579D60000EB5B50 /* SignUpView.swift */,
 				D005546D2579D5F800EB5B50 /* SignUpViewController.swift */,
 				D00554682579D5EB00EB5B50 /* SignUpViewModel.swift */,
+				D0342E2D258C2E8600D75599 /* TestViewController.swift */,
+				D0342E32258C2F0D00D75599 /* TestViewModel.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -666,13 +706,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D04A22C8257C27DB00BEDED2 /* ValidationServiceType.swift in Sources */,
+				D0342E13258B006800D75599 /* UsernameView.swift in Sources */,
 				D00554642579D59B00EB5B50 /* AppDelegate+Injection.swift in Sources */,
 				D0AD668125772ED700AF6BC1 /* ViewController.swift in Sources */,
 				D0AD663625772D4700AF6BC1 /* AppDelegate.swift in Sources */,
+				D0342E18258B007000D75599 /* PasswordView.swift in Sources */,
 				D04A22B4257C246C00BEDED2 /* UIButton+Rx.swift in Sources */,
 				D00554522579D4A300EB5B50 /* SceneCoordinatorType.swift in Sources */,
-				D04A22A6257C18E800BEDED2 /* FormLabel.swift in Sources */,
+				D0342E0E258B005200D75599 /* EmailView.swift in Sources */,
+				D04A22A6257C18E800BEDED2 /* ErrorLabel.swift in Sources */,
 				D02F9C8E257F04C900F58B35 /* UITextField+Rx.swift in Sources */,
 				D005546E2579D5F800EB5B50 /* SignUpViewController.swift in Sources */,
 				D00554C4257A538500EB5B50 /* FormButton.swift in Sources */,
@@ -682,25 +724,31 @@
 				D00554BF257A536E00EB5B50 /* FormTextField.swift in Sources */,
 				D00554812579D63E00EB5B50 /* BindableType.swift in Sources */,
 				D02F9C89257F031E00F58B35 /* ErrorTracker.swift in Sources */,
+				D0342E3B258C3FA600D75599 /* BackButton.swift in Sources */,
 				D04A22A1257C184300BEDED2 /* Resources.swift in Sources */,
 				D00554862579D6FE00EB5B50 /* UIViewController+Rx.swift in Sources */,
 				D02F9C84257F030500F58B35 /* ActivityIndicator.swift in Sources */,
 				D02F97A2257D182E00F58B35 /* MockFirebaseService.swift in Sources */,
 				D00554732579D60000EB5B50 /* SignUpView.swift in Sources */,
+				D0342E33258C2F0D00D75599 /* TestViewModel.swift in Sources */,
 				D04A2299257C17D900BEDED2 /* AddProfilePictureView.swift in Sources */,
 				D00554692579D5EB00EB5B50 /* SignUpViewModel.swift in Sources */,
 				D04A22B9257C27C300BEDED2 /* FirebaseService.swift in Sources */,
+				D0342E2E258C2E8600D75599 /* TestViewController.swift in Sources */,
 				D04A22C3257C27D300BEDED2 /* FirebaseServiceType.swift in Sources */,
 				D00554C9257A53C400EB5B50 /* UIView+Extensions.swift in Sources */,
 				D04A23A6257C2BF000BEDED2 /* User.swift in Sources */,
+				D0342E4B258C413000D75599 /* FormView.swift in Sources */,
 				D00554572579D4AD00EB5B50 /* SceneCoordinator.swift in Sources */,
 				D02F97AA257D1B0200F58B35 /* AuthData.swift in Sources */,
+				D0B41BA42586913800DDE0FA /* ValidationServiceType.swift in Sources */,
 				D005547C2579D62600EB5B50 /* ViewModelType.swift in Sources */,
 				D005545C2579D53000EB5B50 /* Observable+Extensions.swift in Sources */,
 				D00554482579D48E00EB5B50 /* Scene.swift in Sources */,
-				D04A22BE257C27CA00BEDED2 /* ValidationService.swift in Sources */,
+				D0B41B9F2586910D00DDE0FA /* ValidationService.swift in Sources */,
 				D005544D2579D49800EB5B50 /* SceneTransitionType.swift in Sources */,
 				D04A22AC257C205F00BEDED2 /* SignInViewController.swift in Sources */,
+				D0342E46258C40D900D75599 /* FormLabel.swift in Sources */,
 				D005548B2579D76600EB5B50 /* Reactive+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

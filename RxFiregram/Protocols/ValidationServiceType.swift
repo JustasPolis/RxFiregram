@@ -2,7 +2,7 @@
 //  ValidationServiceType.swift
 //  RxFiregram
 //
-//  Created by Justin on 2020-12-05.
+//  Created by Justin on 2020-12-13.
 //
 
 import RxSwift
@@ -11,7 +11,6 @@ enum ValidationResult: Equatable {
     case ok
     case failed(message: String)
     case validating
-    case empty
 }
 
 extension ValidationResult {

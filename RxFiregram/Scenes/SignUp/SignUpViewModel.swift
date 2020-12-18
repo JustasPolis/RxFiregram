@@ -23,83 +23,65 @@ final class SignUpViewModel: ViewModelType {
         let email: Driver<String>
         let signInButtonTap: Driver<Void>
         let signUpTrigger: Driver<Void>
-        let didEndEditingPassword: Driver<Void>
-        let didEndEditingEmail: Driver<Void>
-        let didEndEditingUsername: Driver<Void>
     }
 
     struct Output {
         let navigateToSignInScene: Driver<Void>
         let signUpEnabled: Driver<Bool>
-        let validatedUsername: Driver<ValidationResult>
-        let validatedEmail: Driver<ValidationResult>
-        let validatedPassword: Driver<ValidationResult>
         let signUp: Driver<Void>
-        let authError: Driver<AuthErrorCode?>
+        let authError: Driver<Error>
         let isLoading: Driver<Bool>
+        let validatedEmail: Driver<ValidationResult>
+        let test2: Driver<(ValidationResult, ValidationResult)>
     }
 
     func signUp(email: String, password: String, username: String) -> Observable<Void> {
-        self.firebaseService.signUp(email: email, password: password).map { authData in
+        self.firebaseService.signUp(email: email.lowercased(), password: password).map { authData in
             User(id: authData.id, username: username.lowercased(), profileImageUrl: "", email: authData.email ?? "")
         }.flatMap { user in
             self.firebaseService.storeUserInformation(user)
         }
     }
 
+    // username kaip pagrindinis ID
+    // username negali but empty
+
     func transform(input: Input) -> Output {
-
-        let usernameInputChanged = input.didEndEditingUsername
-            .withLatestFrom(input.username)
-            .withPrevious()
-            .didChange()
-
-        let validatedUsername = input.didEndEditingUsername
-            .take(if: usernameInputChanged)
-            .withLatestFrom(input.username)
-            .flatMapLatest { username -> Driver<ValidationResult> in
-                self.validationService.validateUsername(username)
-                    .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
-            }
-
-        let emailInputChanged = input.didEndEditingEmail
-            .withLatestFrom(input.email)
-            .withPrevious()
-            .didChange()
-
-        let validatedEmail = input.didEndEditingEmail
-            .take(if: emailInputChanged)
-            .withLatestFrom(input.email)
-            .flatMapLatest { email in
-                self.validationService.validateEmail(email)
-                    .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
-            }
-
-        let passwordInputChanged = input.didEndEditingPassword
-            .withLatestFrom(input.password)
-            .withPrevious()
-            .didChange()
-
-        let validatedPassword = input.didEndEditingPassword
-            .take(if: passwordInputChanged)
-            .withLatestFrom(input.password)
-            .map { password in
-                self.validationService.validatePassword(password)
-            }
 
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
-
         let authError = errorTracker.asDriver()
-            .map { error in
-                AuthErrorCode(rawValue: error._code)
-            }
-
         let isLoading = activityIndicator.asDriver()
 
         let navigateToSignInScene = input.signInButtonTap.flatMap {
             self.sceneCoordinator.transition(to: Scene.signIn)
         }
+
+        // error -> username Error/ email Error
+        // combine, tada .ok, .ok switch case su email ir username
+
+        let emailInputChanged = input.signUpTrigger
+            .withLatestFrom(input.email)
+            .withPrevious()
+            .didChange()
+
+        let validatedEmail = input.signUpTrigger
+            .withLatestFrom(input.email)
+            .take(if: emailInputChanged)
+            .flatMapLatest { email in
+                self.validationService.validateEmail(email)
+                    .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
+            }
+
+        let test = input.signUpTrigger
+            .withLatestFrom(input.email)
+            .take(if: emailInputChanged)
+            .flatMapLatest { email in
+                self.validationService.validateEmail(email)
+                    .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
+            }
+
+        let test2 = Driver.zip(validatedEmail, test)
 
         let textFieldInputs = Driver.combineLatest(input.email, input.password, input.username)
 
@@ -113,22 +95,18 @@ final class SignUpViewModel: ViewModelType {
             }
 
         // username unique paziuret ar galim padaryt checka firebase DB
-        
-        let signUpEnabled = Driver.combineLatest(validatedUsername, validatedEmail, validatedPassword)
-            { username, email, password in
-                username.isValid &&
-                    email.isValid &&
-                    password.isValid
-            }
+
+        let signUpEnabled = Driver.combineLatest(input.email, input.password, input.username) { email, password, username in
+            !email.isEmpty && !password.isEmpty && !username.isEmpty
+        }.startWith(false)
             .distinctUntilChanged()
 
         return Output(navigateToSignInScene: navigateToSignInScene,
                       signUpEnabled: signUpEnabled,
-                      validatedUsername: validatedUsername,
-                      validatedEmail: validatedEmail,
-                      validatedPassword: validatedPassword,
                       signUp: signUp,
                       authError: authError,
-                      isLoading: isLoading)
+                      isLoading: isLoading,
+                      validatedEmail: validatedEmail,
+                      test2: test2)
     }
 }

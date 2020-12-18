@@ -2,12 +2,12 @@
 //  FormLabel.swift
 //  RxFiregram
 //
-//  Created by Justin on 2020-12-18.
+//  Created by Justin on 2020-12-05.
 //
 
 import UIKit
 
-class FormLabel: UILabel {
+class ErrorLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,7 +19,7 @@ class FormLabel: UILabel {
     }
 
     func setupLabel() {
-        self.font = .systemFont(ofSize: 18)
-        self.textColor = .black
+        self.font = .systemFont(ofSize: 12)
+        self.textColor = .red
     }
 }

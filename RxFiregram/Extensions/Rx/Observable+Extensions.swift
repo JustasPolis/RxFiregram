@@ -57,16 +57,4 @@ extension ObservableType {
     func mapToVoid() -> Observable<Void> {
         map { _ in }
     }
-
-    func take(if trigger: Observable<Bool>) -> Observable<Element> {
-        withLatestFrom(trigger) { (myValue, triggerValue) -> (Element, Bool) in
-            (myValue, triggerValue)
-        }
-        .filter { (_, triggerValue) -> Bool in
-            triggerValue == true
-        }
-        .map { (myValue, _) -> Element in
-            myValue
-        }
-    }
 }

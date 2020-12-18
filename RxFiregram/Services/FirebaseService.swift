@@ -44,7 +44,7 @@ class FirebaseService: FirebaseServiceType {
             .child("users")
             .rx
         let userEncoded = try! FirebaseEncoder().encode(user)
-        let values = [user.id: userEncoded]
+        let values = [user.username: userEncoded]
         return usersRef.updateChildValues(values)
             .asObservable()
             .mapToVoid()

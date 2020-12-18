@@ -9,16 +9,6 @@ import RxCocoa
 import RxSwift
 
 extension Reactive where Base: UILabel {
-    var validationResult: Binder<ValidationResult> {
-        Binder(base) { label, result in
-            switch result {
-                case let .failed(message):
-                    label.text = message
-                default:
-                    label.text = ""
-            }
-        }
-    }
 
     var onEditingChanged: Binder<Void> {
         Binder(base) { label, _ in
