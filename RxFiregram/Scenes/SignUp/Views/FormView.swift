@@ -22,6 +22,7 @@ class FormView: UIView {
 
     let nextButton = FormButton(type: .system).then {
         $0.setTitle("Next", for: .normal)
+        $0.titleLabel?.font = .boldSystemFont(ofSize: 14)
     }
 
     let labelView = UIView()

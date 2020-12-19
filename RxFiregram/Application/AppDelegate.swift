@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        sceneCoordinator.transition(to: Scene.signUp)
+        sceneCoordinator.transition(to: Scene.landing)
 
         return true
     }

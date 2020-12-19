@@ -19,9 +19,8 @@ class FormButton: UIButton {
     }
 
     func setupButton() {
-        self.layer.cornerRadius = 5
-        self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        self.layer.cornerRadius = 4
         self.setTitleColor(.white, for: .normal)
-        self.backgroundColor = Resources.Appearance.Color.darkBlue
+        self.backgroundColor = Resources.Appearance.Color.blue
     }
 }

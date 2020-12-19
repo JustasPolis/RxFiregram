@@ -21,4 +21,10 @@ extension Reactive where Base: UITextField {
             textField.rightViewMode = .never
         }
     }
+
+    var becomesFirstResponsder: Binder<Void> {
+        Binder(base) { textField, _ in
+            textField.becomeFirstResponder()
+        }
+    }
 }

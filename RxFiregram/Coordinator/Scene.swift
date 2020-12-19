@@ -14,18 +14,24 @@ protocol TargetScene {
 enum Scene {
     case signUp
     case signIn
+    case landing
 }
 
 extension Scene: TargetScene {
     var transition: SceneTransitionType {
         switch self {
             case .signUp:
-                let signUpVM = TestViewModel()
-                let signUpVC = UINavigationController(rootViewController: TestViewController(viewModel: signUpVM))
-                return .root(signUpVC)
+                let signUpVM = SignUpViewModel()
+                let signUpVC = SignUpViewController(viewModel: signUpVM)
+                return .push(signUpVC)
             case .signIn:
-                let signInVC = SignInViewController()
+                let signInVM = SignInViewModel()
+                let signInVC = SignInViewController(viewModel: signInVM)
                 return .push(signInVC)
+            case .landing:
+                let landingVM = LandingViewModel()
+                let landingVC = UINavigationController(rootViewController: LandingViewController(viewModel: landingVM))
+                return .root(landingVC)
         }
     }
 }

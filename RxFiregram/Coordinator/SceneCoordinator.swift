@@ -59,11 +59,6 @@ class SceneCoordinator: NSObject, SceneCoordinatorType {
                 currentViewController = SceneCoordinator.actualViewController(for: viewController)
                 window.rootViewController = viewController
                 subject.onCompleted()
-                UIView.transition(with: window,
-                                  duration: 0.3,
-                                  options: .transitionCrossDissolve,
-                                  animations: nil,
-                                  completion: nil)
             case let .push(viewController):
                 guard let navigationController = currentViewController.navigationController else {
                     fatalError("Can't push a view controller without a current navigation controller")
@@ -98,21 +93,12 @@ class SceneCoordinator: NSObject, SceneCoordinatorType {
 
     @discardableResult
     func pop(animated: Bool) -> Driver<Void> {
-        var isDisposed = false
-        var currentObserver: AnyObserver<Void>?
-        let source = Observable<Void>.create { observer in
-            currentObserver = observer
-            return Disposables.create {
-                isDisposed = true
-            }
-        }
+        let subject = PublishSubject<Void>()
 
         if let presentingViewController = currentViewController.presentingViewController {
             currentViewController.dismiss(animated: animated) {
-                if !isDisposed {
-                    self.currentViewController = SceneCoordinator.actualViewController(for: presentingViewController)
-                }
-                currentObserver?.on(.completed)
+                self.currentViewController = SceneCoordinator.actualViewController(for: presentingViewController)
+                subject.onCompleted()
             }
         } else if let navigationController = currentViewController.navigationController {
             _ = navigationController
@@ -120,20 +106,17 @@ class SceneCoordinator: NSObject, SceneCoordinatorType {
                 .delegate
                 .sentMessage(#selector(UINavigationControllerDelegate.navigationController(_:didShow:animated:)))
                 .ignoreAll()
-                .bind(to: currentObserver!)
+                .bind(to: subject)
 
             guard navigationController.popViewController(animated: animated) != nil else {
                 fatalError("can't navigate back from \(currentViewController)")
             }
-
-            if !isDisposed {
-                currentViewController = SceneCoordinator.actualViewController(for: navigationController.viewControllers.last!)
-            }
+            currentViewController = SceneCoordinator.actualViewController(for: navigationController.viewControllers.last!)
         } else {
             fatalError("Not a modal, no navigation controller: can't navigate back from \(currentViewController)")
         }
 
-        return source
+        return subject.asObserver()
             .take(1)
             .ignoreAll()
             .asDriverOnErrorJustComplete()
