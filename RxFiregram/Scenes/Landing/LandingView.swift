@@ -21,6 +21,7 @@ class LandingView: UIView {
     let signUpButton = FormButton(type: .system).then {
         $0.setTitle("Create New Account", for: .normal)
         $0.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        $0.backgroundColor = Resources.Appearance.Color.blue
     }
 
     lazy var stackView = UIStackView(arrangedSubviews: [

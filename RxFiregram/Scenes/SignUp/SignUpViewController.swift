@@ -30,12 +30,23 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bindInput() -> Input {
 
+        // TextField inputs
+
+        let email = emailView.textField.rx.text.orEmpty.asDriver()
+        let password = passwordView.textField.rx.text.orEmpty.asDriver()
+        let username = usernameView.textField.rx.text.orEmpty.asDriver()
+
+        // Button inputs
+
         let emailNextButtonTap = emailView.nextButton.rx.tap.asDriver()
         let usernameNextButtonTap = usernameView.nextButton.rx.tap.asDriver()
         let passwordNextButtonTap = passwordView.nextButton.rx.tap.asDriver()
         let emailBackButtonTap = emailView.backButton.rx.tap.asDriver()
 
-        return Input(emailNextButtonTap: emailNextButtonTap,
+        return Input(username: username,
+                     password: password,
+                     email: email,
+                     emailNextButtonTap: emailNextButtonTap,
                      usernameNextButtonTap: usernameNextButtonTap,
                      passwordNextButtonTap: passwordNextButtonTap,
                      emailBackButtonTap: emailBackButtonTap)
@@ -43,7 +54,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bind(output: Output) {
 
-        // TextField setup
+        // MARK: TextField setup
 
         let emailTextField = emailView.textField.rx
         let usernameTextField = usernameView.textField.rx
@@ -55,14 +66,30 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         passwordView.backButton.rx.tap.asDriver().drive(usernameTextField.becomesFirstResponsder).disposed(by: disposeBag)
         // passwordView
 
-        // Navigation setup
+        // MARK: Navigation setup
 
         output.popToLandingScene.drive().disposed(by: disposeBag)
-        output.emailNextButtonTap.drive(scrollView.rx.scrollForward).disposed(by: disposeBag)
-        output.usernameNextButtonTap.drive(scrollView.rx.scrollForward).disposed(by: disposeBag)
-        output.passwordNextButtonTap.drive(scrollView.rx.scrollForward).disposed(by: disposeBag)
         usernameView.backButton.rx.tap.asDriver().drive(scrollView.rx.scrollBack).disposed(by: disposeBag)
         passwordView.backButton.rx.tap.asDriver().drive(scrollView.rx.scrollBack).disposed(by: disposeBag)
+
+        // MARK: Button State
+
+        emailView.textField.rx.isEmpty.skip(1).drive(emailView.nextButton.rx.isDisabled).disposed(by: disposeBag)
+
+        // MARK: Validation setup
+
+        output.validatedEmail.drive(emailView.rx.validationResult).disposed(by: disposeBag)
+
+        output.validatedEmail.drive(onNext: { [weak self] result in
+            switch result {
+                case .validating:
+                    self?.view.endEditing(true)
+                case .ok:
+                    self?.usernameView.textField.becomeFirstResponder()
+                case .failed:
+                    self?.emailView.textField.becomeFirstResponder()
+            }
+        }).disposed(by: disposeBag)
     }
 
     func setupScrollView() {
@@ -122,5 +149,26 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             $0.returnKeyType = .next
             $0.autocorrectionType = .yes
         }
+    }
+}
+
+extension Reactive where Base: FormView {
+
+    var validationResult: Binder<ValidationResult> {
+        Binder<ValidationResult>(base) { view, result in
+            view.nextButton.validationResult = result
+            view.textField.validationResult = result
+            view.errorLabel.validationResult = result
+            view.validationResult = result
+        }
+    }
+}
+
+extension UIScrollView {
+    func scrollForward() {
+        let x = CGFloat(contentOffset.x)
+        let viewWidth = UIScreen.main.bounds.width
+        let offset = x + viewWidth
+        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
 }

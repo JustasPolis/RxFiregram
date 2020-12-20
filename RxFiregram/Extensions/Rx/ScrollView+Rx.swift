@@ -18,13 +18,17 @@ extension Reactive where Base: UIScrollView {
         }
     }
 
-    var scrollForward: Binder<Void> {
-        Binder(self.base) { scrollView, _ in
-            let x = CGFloat(scrollView.contentOffset.x)
-            let viewWidth = UIScreen.main.bounds.width
-            let offset = x + viewWidth
-            scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+    var scrollForward: Binder<ValidationResult> {
+        Binder(self.base) { scrollView, validationResult in
+            switch validationResult {
+                case .ok:
+                    let x = CGFloat(scrollView.contentOffset.x)
+                    let viewWidth = UIScreen.main.bounds.width
+                    let offset = x + viewWidth
+                    scrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+                default:
+                    return
+            }
         }
     }
 }
-

@@ -10,6 +10,17 @@ import UIKit
 
 class FormView: UIView {
 
+    var validationResult: ValidationResult! {
+        didSet {
+            switch validationResult {
+                case .validating:
+                    isUserInteractionEnabled = false
+                default:
+                    isUserInteractionEnabled = true
+            }
+        }
+    }
+
     let errorLabel = ErrorLabel()
 
     let backButton = BackButton(type: .system)

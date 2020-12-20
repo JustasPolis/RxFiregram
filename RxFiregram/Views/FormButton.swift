@@ -5,9 +5,43 @@
 //  Created by Justin on 2020-12-04.
 //
 
+import Then
 import UIKit
 
 class FormButton: UIButton {
+
+    let activityIndicator = UIActivityIndicatorView().then {
+        $0.color = .white
+    }
+
+    var validationResult: ValidationResult! {
+        didSet {
+            switch validationResult {
+                case .validating:
+                    isEnabled = false
+                    backgroundColor = Resources.Appearance.Color.lightBlue
+                    setTitle("", for: .normal)
+                    activityIndicator.add(to: self)
+                    activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+                    activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+                    activityIndicator.startAnimating()
+                case .failed:
+                    isEnabled = true
+                    backgroundColor = Resources.Appearance.Color.blue
+                    setTitle("Next", for: .normal)
+                    activityIndicator.stopAnimating()
+                case .ok:
+                    isEnabled = true
+                    setTitle("Next", for: .normal)
+                    backgroundColor = Resources.Appearance.Color.blue
+                    activityIndicator.stopAnimating()
+                default:
+                    isEnabled = false
+                    setTitle("Next", for: .normal)
+                    backgroundColor = Resources.Appearance.Color.lightBlue
+            }
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,6 +55,5 @@ class FormButton: UIButton {
     func setupButton() {
         self.layer.cornerRadius = 4
         self.setTitleColor(.white, for: .normal)
-        self.backgroundColor = Resources.Appearance.Color.blue
     }
 }

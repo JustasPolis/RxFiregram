@@ -9,6 +9,17 @@ import UIKit
 
 class ErrorLabel: UILabel {
 
+    var validationResult: ValidationResult! {
+        didSet {
+            switch validationResult {
+                case .failed(let message):
+                    text = message
+                default:
+                    text = ""
+            }
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupLabel()

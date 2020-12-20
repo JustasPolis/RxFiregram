@@ -14,7 +14,7 @@ class ValidationService: ValidationServiceType {
 
     func validateEmail(_ email: String) -> Observable<ValidationResult> {
         if !email.isValidEmail {
-            return .just(.failed(message: "Please provide a valid email address"))
+            return .just(.failed(message: "Please provide a valid email address."))
         }
 
         return firebaseService.isEmailAvailable(email).map { available in

@@ -9,6 +9,21 @@ import UIKit
 
 class FormTextField: UITextField {
 
+    var validationResult: ValidationResult! {
+        didSet {
+            switch validationResult {
+                case .validating:
+                    self.isUserInteractionEnabled = false
+                case .failed:
+                    self.layer.borderWidth = 1
+                    self.layer.cornerRadius = 4
+                    self.layer.borderColor = Resources.Appearance.Color.red.cgColor
+                default:
+                    self.isUserInteractionEnabled = true
+            }
+        }
+    }
+
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         let viewDimensions: CGFloat = 20
         let y = bounds.size.height / 2 - viewDimensions / 2
@@ -18,7 +33,7 @@ class FormTextField: UITextField {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        textFieldSetup()
+        self.textFieldSetup()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -27,6 +42,7 @@ class FormTextField: UITextField {
 
     private func textFieldSetup() {
         borderStyle = .roundedRect
+        tintColor = Resources.Appearance.Color.blue
         backgroundColor = UIColor(white: 0, alpha: 0.03)
         font = UIFont.systemFont(ofSize: 14)
     }

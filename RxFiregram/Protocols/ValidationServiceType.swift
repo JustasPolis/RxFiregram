@@ -14,6 +14,19 @@ enum ValidationResult: Equatable {
 }
 
 extension ValidationResult {
+    static func == (lhs: ValidationResult, rhs: ValidationResult) -> Bool {
+        switch (lhs, rhs) {
+            case (.ok, .ok):
+                return true
+            case (.validating, .validating):
+                return true
+            default:
+                return false
+        }
+    }
+}
+
+extension ValidationResult {
     var isValid: Bool {
         switch self {
             case .ok:
