@@ -12,15 +12,12 @@ class FormTextField: UITextField {
     var validationResult: ValidationResult! {
         didSet {
             switch validationResult {
-                case .validating:
-                    self.isUserInteractionEnabled = false
                 case .failed:
-                    self.isUserInteractionEnabled = true
                     self.layer.borderWidth = 1
                     self.layer.cornerRadius = 5
                     self.layer.borderColor = Resources.Appearance.Color.red.cgColor
                 default:
-                    self.isUserInteractionEnabled = true
+                    break
             }
         }
     }

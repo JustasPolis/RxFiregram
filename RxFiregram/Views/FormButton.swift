@@ -23,12 +23,6 @@ class FormButton: UIButton {
                     activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
                     activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
                     activityIndicator.startAnimating()
-                case .failed:
-                    setTitle("Next", for: .normal)
-                    activityIndicator.stopAnimating()
-                case .ok:
-                    setTitle("Next", for: .normal)
-                    activityIndicator.stopAnimating()
                 default:
                     setTitle("Next", for: .normal)
                     activityIndicator.stopAnimating()

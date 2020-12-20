@@ -68,8 +68,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                 case .validating:
                     self?.view.endEditing(true)
                 case .ok:
-                    self?.scrollView.scrollForward { [weak self] in
-                    }
+                    self?.scrollView.scrollForward()
                     self?.usernameView.textField.becomeFirstResponder()
                 case .failed:
                     self?.emailView.textField.becomeFirstResponder()
@@ -106,9 +105,9 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         usernameView.backButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.scrollView.scrollBack { [weak self] in
-                    self?.emailView.textField.becomeFirstResponder()
-                }
+                self?.scrollView.scrollBack()
+                self?.emailView.textField.becomeFirstResponder()
+
             }).disposed(by: disposeBag)
 
         // MARK: PasswordView bindings
@@ -126,9 +125,8 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         passwordView.backButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                self?.scrollView.scrollBack { [weak self] in
-                    self?.usernameView.textField.becomeFirstResponder()
-                }
+                self?.scrollView.scrollBack()
+                self?.usernameView.textField.becomeFirstResponder()
             }).disposed(by: disposeBag)
     }
 
@@ -212,25 +210,17 @@ extension Reactive where Base: FormView {
 }
 
 extension UIScrollView {
-    func scrollForward(completion: @escaping () -> Void) {
+    func scrollForward() {
         let x = CGFloat(contentOffset.x)
         let viewWidth = UIScreen.main.bounds.width
         let offset = x + viewWidth
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            self.contentOffset.x = offset
-        }) { _ in
-            completion()
-        }
+        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
 
-    func scrollBack(completion: @escaping () -> Void) {
+    func scrollBack() {
         let x = CGFloat(contentOffset.x)
         let viewWidth = UIScreen.main.bounds.width
         let offset = x - viewWidth
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            self.contentOffset.x = offset
-        }) { _ in
-            completion()
-        }
+        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
 }

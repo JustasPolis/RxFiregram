@@ -25,7 +25,6 @@
 		D00554C4257A538500EB5B50 /* FormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554C3257A538500EB5B50 /* FormButton.swift */; };
 		D00554C9257A53C400EB5B50 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554C8257A53C400EB5B50 /* UIView+Extensions.swift */; };
 		D02F9704257C4AA100F58B35 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9703257C4AA100F58B35 /* String+Extensions.swift */; };
-		D02F9789257C541700F58B35 /* UILabel+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F9788257C541700F58B35 /* UILabel+Rx.swift */; };
 		D02F97A2257D182E00F58B35 /* MockFirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F97A1257D182E00F58B35 /* MockFirebaseService.swift */; };
 		D02F97AA257D1B0200F58B35 /* AuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F97A9257D1B0200F58B35 /* AuthData.swift */; };
 		D02F97B7257D210500F58B35 /* SignUpViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02F97B6257D210500F58B35 /* SignUpViewModelTests.swift */; };
@@ -43,7 +42,6 @@
 		D0342E84258E349200D75599 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E83258E349200D75599 /* SignInView.swift */; };
 		D0342E8C258E380400D75599 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E8B258E380400D75599 /* SignInViewModel.swift */; };
 		D0342EB1258EBCF100D75599 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342EB0258EBCF100D75599 /* SignUpView.swift */; };
-		D0342EB6258EBDE300D75599 /* ScrollView+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342EB5258EBDE300D75599 /* ScrollView+Rx.swift */; };
 		D04A22A1257C184300BEDED2 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A0257C184300BEDED2 /* Resources.swift */; };
 		D04A22A6257C18E800BEDED2 /* ErrorLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */; };
 		D04A22AC257C205F00BEDED2 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22AB257C205F00BEDED2 /* SignInViewController.swift */; };
@@ -105,7 +103,6 @@
 		D00554C3257A538500EB5B50 /* FormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButton.swift; sourceTree = "<group>"; };
 		D00554C8257A53C400EB5B50 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D02F9703257C4AA100F58B35 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		D02F9788257C541700F58B35 /* UILabel+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Rx.swift"; sourceTree = "<group>"; };
 		D02F97A1257D182E00F58B35 /* MockFirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFirebaseService.swift; sourceTree = "<group>"; };
 		D02F97A9257D1B0200F58B35 /* AuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthData.swift; sourceTree = "<group>"; };
 		D02F97B6257D210500F58B35 /* SignUpViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelTests.swift; sourceTree = "<group>"; };
@@ -123,7 +120,6 @@
 		D0342E83258E349200D75599 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		D0342E8B258E380400D75599 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		D0342EB0258EBCF100D75599 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
-		D0342EB5258EBDE300D75599 /* ScrollView+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScrollView+Rx.swift"; sourceTree = "<group>"; };
 		D04A22A0257C184300BEDED2 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLabel.swift; sourceTree = "<group>"; };
 		D04A22AB257C205F00BEDED2 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -435,9 +431,7 @@
 				D005548A2579D76600EB5B50 /* Reactive+Extensions.swift */,
 				D04A22B3257C246C00BEDED2 /* UIButton+Rx.swift */,
 				D00554852579D6FE00EB5B50 /* UIViewController+Rx.swift */,
-				D02F9788257C541700F58B35 /* UILabel+Rx.swift */,
 				D02F9C8D257F04C900F58B35 /* UITextField+Rx.swift */,
-				D0342EB5258EBDE300D75599 /* ScrollView+Rx.swift */,
 			);
 			path = Rx;
 			sourceTree = "<group>";
@@ -708,7 +702,6 @@
 				D00554C4257A538500EB5B50 /* FormButton.swift in Sources */,
 				D0342E7A258D8A6A00D75599 /* LandingViewModel.swift in Sources */,
 				D00554BA257A536000EB5B50 /* InstagramLogo.swift in Sources */,
-				D02F9789257C541700F58B35 /* UILabel+Rx.swift in Sources */,
 				D02F9704257C4AA100F58B35 /* String+Extensions.swift in Sources */,
 				D0342E7F258D8A7100D75599 /* LandingView.swift in Sources */,
 				D00554BF257A536E00EB5B50 /* FormTextField.swift in Sources */,
@@ -723,7 +716,6 @@
 				D0342E33258C2F0D00D75599 /* SignUpViewModel.swift in Sources */,
 				D04A22B9257C27C300BEDED2 /* FirebaseService.swift in Sources */,
 				D0342E84258E349200D75599 /* SignInView.swift in Sources */,
-				D0342EB6258EBDE300D75599 /* ScrollView+Rx.swift in Sources */,
 				D0342E2E258C2E8600D75599 /* SignUpViewController.swift in Sources */,
 				D04A22C3257C27D300BEDED2 /* FirebaseServiceType.swift in Sources */,
 				D00554C9257A53C400EB5B50 /* UIView+Extensions.swift in Sources */,
