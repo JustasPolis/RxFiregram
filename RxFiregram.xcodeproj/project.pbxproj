@@ -42,6 +42,7 @@
 		D0342E84258E349200D75599 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E83258E349200D75599 /* SignInView.swift */; };
 		D0342E8C258E380400D75599 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342E8B258E380400D75599 /* SignInViewModel.swift */; };
 		D0342EB1258EBCF100D75599 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342EB0258EBCF100D75599 /* SignUpView.swift */; };
+		D0342EC1258FCF9D00D75599 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0342EC0258FCF9D00D75599 /* UIScrollView+Extensions.swift */; };
 		D04A22A1257C184300BEDED2 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A0257C184300BEDED2 /* Resources.swift */; };
 		D04A22A6257C18E800BEDED2 /* ErrorLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */; };
 		D04A22AC257C205F00BEDED2 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04A22AB257C205F00BEDED2 /* SignInViewController.swift */; };
@@ -120,6 +121,7 @@
 		D0342E83258E349200D75599 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		D0342E8B258E380400D75599 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		D0342EB0258EBCF100D75599 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		D0342EC0258FCF9D00D75599 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		D04A22A0257C184300BEDED2 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		D04A22A5257C18E800BEDED2 /* ErrorLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLabel.swift; sourceTree = "<group>"; };
 		D04A22AB257C205F00BEDED2 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 				D0AD668525772EE700AF6BC1 /* Rx */,
 				D00554C8257A53C400EB5B50 /* UIView+Extensions.swift */,
 				D02F9703257C4AA100F58B35 /* String+Extensions.swift */,
+				D0342EC0258FCF9D00D75599 /* UIScrollView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 				D0342EB1258EBCF100D75599 /* SignUpView.swift in Sources */,
 				D02F97AA257D1B0200F58B35 /* AuthData.swift in Sources */,
 				D0B41BA42586913800DDE0FA /* ValidationServiceType.swift in Sources */,
+				D0342EC1258FCF9D00D75599 /* UIScrollView+Extensions.swift in Sources */,
 				D005547C2579D62600EB5B50 /* ViewModelType.swift in Sources */,
 				D005545C2579D53000EB5B50 /* Observable+Extensions.swift in Sources */,
 				D00554482579D48E00EB5B50 /* Scene.swift in Sources */,
