@@ -13,8 +13,7 @@ extension Reactive where Base: UIButton {
     var isDisabled: Binder<Bool> {
         Binder(base) { button, isDisabled in
             button.isEnabled = !isDisabled
-            button.backgroundColor = isDisabled ? Resources.Appearance.Color.lightBlue : Resources.Appearance.Color.blue
+            button.backgroundColor = isDisabled || button.isHighlighted ? Resources.Appearance.Color.lightBlue : Resources.Appearance.Color.blue
         }
     }
 }
-

@@ -18,27 +18,20 @@ class FormButton: UIButton {
         didSet {
             switch validationResult {
                 case .validating:
-                    isEnabled = false
-                    backgroundColor = Resources.Appearance.Color.lightBlue
                     setTitle("", for: .normal)
                     activityIndicator.add(to: self)
                     activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
                     activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
                     activityIndicator.startAnimating()
                 case .failed:
-                    isEnabled = true
-                    backgroundColor = Resources.Appearance.Color.blue
                     setTitle("Next", for: .normal)
                     activityIndicator.stopAnimating()
                 case .ok:
-                    isEnabled = true
                     setTitle("Next", for: .normal)
-                    backgroundColor = Resources.Appearance.Color.blue
                     activityIndicator.stopAnimating()
                 default:
-                    isEnabled = false
                     setTitle("Next", for: .normal)
-                    backgroundColor = Resources.Appearance.Color.lightBlue
+                    activityIndicator.stopAnimating()
             }
         }
     }

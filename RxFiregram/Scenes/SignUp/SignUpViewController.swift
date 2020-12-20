@@ -22,6 +22,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         super.viewDidLoad()
         setupScrollView()
         setupFormViews()
+        setupBindings()
         bindViewModel()
 
         emailView.textField.becomeFirstResponder()
@@ -54,29 +55,11 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bind(output: Output) {
 
-        // MARK: TextField setup
-
-        let emailTextField = emailView.textField.rx
-        let usernameTextField = usernameView.textField.rx
-        let passwordTextField = passwordView.textField.rx
-
-        output.emailNextButtonTap.drive(usernameTextField.becomesFirstResponsder).disposed(by: disposeBag)
-        output.usernameNextButtonTap.drive(passwordTextField.becomesFirstResponsder).disposed(by: disposeBag)
-        usernameView.backButton.rx.tap.asDriver().drive(emailTextField.becomesFirstResponsder).disposed(by: disposeBag)
-        passwordView.backButton.rx.tap.asDriver().drive(usernameTextField.becomesFirstResponsder).disposed(by: disposeBag)
-        // passwordView
-
-        // MARK: Navigation setup
+        // MARK: Navigation output
 
         output.popToLandingScene.drive().disposed(by: disposeBag)
-        usernameView.backButton.rx.tap.asDriver().drive(scrollView.rx.scrollBack).disposed(by: disposeBag)
-        passwordView.backButton.rx.tap.asDriver().drive(scrollView.rx.scrollBack).disposed(by: disposeBag)
 
-        // MARK: Button State
-
-        emailView.textField.rx.isEmpty.skip(1).drive(emailView.nextButton.rx.isDisabled).disposed(by: disposeBag)
-
-        // MARK: Validation setup
+        // MARK: Validation output
 
         output.validatedEmail.drive(emailView.rx.validationResult).disposed(by: disposeBag)
 
@@ -85,11 +68,68 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                 case .validating:
                     self?.view.endEditing(true)
                 case .ok:
+                    self?.scrollView.scrollForward { [weak self] in
+                    }
                     self?.usernameView.textField.becomeFirstResponder()
                 case .failed:
                     self?.emailView.textField.becomeFirstResponder()
             }
         }).disposed(by: disposeBag)
+    }
+
+    func setupBindings() {
+
+        // MARK: EmailView bindings
+
+        emailView.textField.rx.controlEvent(.editingChanged)
+            .asDriver()
+            .drive(emailView.rx.editingChanged)
+            .disposed(by: disposeBag)
+
+        emailView.textField.rx.isEmpty
+            .skip(1)
+            .drive(emailView.nextButton.rx.isDisabled)
+            .disposed(by: disposeBag)
+
+        // MARK: UsernameView bindings
+
+        usernameView.textField.rx.controlEvent(.editingChanged)
+            .asDriver()
+            .drive(usernameView.rx.editingChanged)
+            .disposed(by: disposeBag)
+
+        usernameView.textField.rx.isEmpty
+            .skip(1)
+            .drive(usernameView.nextButton.rx.isDisabled)
+            .disposed(by: disposeBag)
+
+        usernameView.backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.scrollView.scrollBack { [weak self] in
+                    self?.emailView.textField.becomeFirstResponder()
+                }
+            }).disposed(by: disposeBag)
+
+        // MARK: PasswordView bindings
+
+        passwordView.textField.rx.controlEvent(.editingChanged)
+            .asDriver()
+            .drive(passwordView.rx.editingChanged)
+            .disposed(by: disposeBag)
+
+        passwordView.textField.rx.isEmpty
+            .skip(1)
+            .drive(passwordView.nextButton.rx.isDisabled)
+            .disposed(by: disposeBag)
+
+        passwordView.backButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.scrollView.scrollBack { [weak self] in
+                    self?.usernameView.textField.becomeFirstResponder()
+                }
+            }).disposed(by: disposeBag)
     }
 
     func setupScrollView() {
@@ -154,6 +194,13 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
 extension Reactive where Base: FormView {
 
+    var editingChanged: Binder<Void> {
+        Binder<Void>(base) { view, _ in
+            view.errorLabel.text = ""
+            view.textField.layer.borderWidth = 0
+        }
+    }
+
     var validationResult: Binder<ValidationResult> {
         Binder<ValidationResult>(base) { view, result in
             view.nextButton.validationResult = result
@@ -165,10 +212,25 @@ extension Reactive where Base: FormView {
 }
 
 extension UIScrollView {
-    func scrollForward() {
+    func scrollForward(completion: @escaping () -> Void) {
         let x = CGFloat(contentOffset.x)
         let viewWidth = UIScreen.main.bounds.width
         let offset = x + viewWidth
-        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.contentOffset.x = offset
+        }) { _ in
+            completion()
+        }
+    }
+
+    func scrollBack(completion: @escaping () -> Void) {
+        let x = CGFloat(contentOffset.x)
+        let viewWidth = UIScreen.main.bounds.width
+        let offset = x - viewWidth
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.contentOffset.x = offset
+        }) { _ in
+            completion()
+        }
     }
 }

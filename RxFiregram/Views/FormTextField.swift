@@ -15,8 +15,9 @@ class FormTextField: UITextField {
                 case .validating:
                     self.isUserInteractionEnabled = false
                 case .failed:
+                    self.isUserInteractionEnabled = true
                     self.layer.borderWidth = 1
-                    self.layer.cornerRadius = 4
+                    self.layer.cornerRadius = 5
                     self.layer.borderColor = Resources.Appearance.Color.red.cgColor
                 default:
                     self.isUserInteractionEnabled = true
@@ -45,5 +46,6 @@ class FormTextField: UITextField {
         tintColor = Resources.Appearance.Color.blue
         backgroundColor = UIColor(white: 0, alpha: 0.03)
         font = UIFont.systemFont(ofSize: 14)
+        autocapitalizationType = .none
     }
 }
