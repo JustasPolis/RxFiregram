@@ -19,26 +19,21 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
     private var scrollView = UIScrollView()
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
         setupScrollView()
         setupFormViews()
         setupBindings()
         bindViewModel()
-
         emailView.textField.becomeFirstResponder()
         rx.hideKeyboardOnTap.drive().disposed(by: disposeBag)
     }
 
     func bindInput() -> Input {
 
-        // TextField inputs
-
         let email = emailView.textField.rx.text.orEmpty.asDriver()
         let password = passwordView.textField.rx.text.orEmpty.asDriver()
         let username = usernameView.textField.rx.text.orEmpty.asDriver()
-
-        // Button inputs
-
         let emailNextButtonTap = emailView.nextButton.rx.tap.asDriver()
         let usernameNextButtonTap = usernameView.nextButton.rx.tap.asDriver()
         let passwordNextButtonTap = passwordView.nextButton.rx.tap.asDriver()
@@ -55,11 +50,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bind(output: Output) {
 
-        // MARK: Navigation output
-
         output.popToLandingScene.drive().disposed(by: disposeBag)
-
-        // MARK: Validation output
 
         output.validatedEmail.drive(emailView.rx.validationResult).disposed(by: disposeBag)
 
@@ -78,8 +69,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func setupBindings() {
 
-        // MARK: EmailView bindings
-
         emailView.textField.rx.controlEvent(.editingChanged)
             .asDriver()
             .drive(emailView.rx.editingChanged)
@@ -89,8 +78,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             .skip(1)
             .drive(emailView.nextButton.rx.isDisabled)
             .disposed(by: disposeBag)
-
-        // MARK: UsernameView bindings
 
         usernameView.textField.rx.controlEvent(.editingChanged)
             .asDriver()
@@ -109,8 +96,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                 self?.emailView.textField.becomeFirstResponder()
 
             }).disposed(by: disposeBag)
-
-        // MARK: PasswordView bindings
 
         passwordView.textField.rx.controlEvent(.editingChanged)
             .asDriver()
@@ -152,8 +137,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func setupFormViews() {
 
-        // EmailView Setup
-
         emailView.topLabel.do {
             $0.text = "Please enter your email address"
         }
@@ -163,9 +146,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             $0.returnKeyType = .next
             $0.autocorrectionType = .no
         }
-
-        // PasswordView Setup
-
         passwordView.topLabel.do {
             $0.text = "Please enter your password"
         }
@@ -175,9 +155,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             $0.textContentType = .password
             $0.keyboardType = .default
         }
-
-        // UsernameView Setup
-
         usernameView.topLabel.do {
             $0.text = "Please enter your username"
         }
@@ -206,21 +183,5 @@ extension Reactive where Base: FormView {
             view.errorLabel.validationResult = result
             view.validationResult = result
         }
-    }
-}
-
-extension UIScrollView {
-    func scrollForward() {
-        let x = CGFloat(contentOffset.x)
-        let viewWidth = UIScreen.main.bounds.width
-        let offset = x + viewWidth
-        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
-    }
-
-    func scrollBack() {
-        let x = CGFloat(contentOffset.x)
-        let viewWidth = UIScreen.main.bounds.width
-        let offset = x - viewWidth
-        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
     }
 }
