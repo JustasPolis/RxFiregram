@@ -25,14 +25,14 @@ target 'RxFiregram' do
  
   target 'RxFiregramTests' do
      inherit! :search_paths
-    pod 'RxTest'
     pod 'RxBlocking'
+    pod 'RxTest'
   end
 
   target 'RxFiregramUITests' do
     # Pods for testing
-    pod 'RxTest'
     pod 'RxBlocking'
+    pod 'RxTest'
   end
 end
 

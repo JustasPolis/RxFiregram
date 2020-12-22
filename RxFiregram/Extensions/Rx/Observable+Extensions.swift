@@ -14,6 +14,10 @@ extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingSt
         map { _ in }
     }
 
+    public func merge(with other: Driver<Element>) -> SharedSequence<SharingStrategy, Element> {
+        Driver.merge(self as! SharedSequence<DriverSharingStrategy, Self.Element>, other)
+    }
+
     func withPrevious() -> SharedSequence<SharingStrategy, (Element, Element)> where Element == String {
         scan((String(), String())) { ($0.1, $1) }
     }

@@ -14,25 +14,15 @@ class FormButton: UIButton {
         $0.color = .white
     }
 
-    var validationResult: ValidationResult! {
+    override var isEnabled: Bool {
         didSet {
-            switch validationResult {
-                case .validating:
-                    setTitle("", for: .normal)
-                    activityIndicator.add(to: self)
-                    activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-                    activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-                    activityIndicator.startAnimating()
-                default:
-                    setTitle("Next", for: .normal)
-                    activityIndicator.stopAnimating()
-            }
+            backgroundColor = isEnabled ? Resources.Appearance.Color.blue : Resources.Appearance.Color.lightBlue
         }
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupButton()
+        setupButton()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,7 +30,8 @@ class FormButton: UIButton {
     }
 
     func setupButton() {
-        self.layer.cornerRadius = 4
-        self.setTitleColor(.white, for: .normal)
+        layer.cornerRadius = 4
+        isEnabled = true
+        setTitleColor(.white, for: .normal)
     }
 }

@@ -19,4 +19,16 @@ extension Reactive where Base: UIViewController {
             .map { _ in vc.view.endEditing(true) }
             .asDriverOnErrorJustComplete()
     }
+
+    var endEditing: Binder<Bool> {
+        Binder(base) { vc, value in
+            vc.view.endEditing(value)
+        }
+    }
+
+    public var userInteractionDisabled: Binder<Bool> {
+        Binder(base) { vc, isDisabled in
+            vc.view.isUserInteractionEnabled = !isDisabled
+        }
+    }
 }

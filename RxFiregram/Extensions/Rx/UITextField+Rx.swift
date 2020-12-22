@@ -10,9 +10,9 @@ import RxSwift
 
 extension Reactive where Base: UITextField {
 
-    var becomesFirstResponsder: Binder<Void> {
-        Binder(base) { textField, _ in
-            textField.becomeFirstResponder()
+    var borderWidth: Binder<Int> {
+        Binder(base) { textField, value in
+            textField.layer.borderWidth = CGFloat(value)
         }
     }
 

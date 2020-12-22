@@ -31,16 +31,14 @@ final class SignUpViewModel: ViewModelType {
         let emailNextButtonTap: Driver<Void>
         let usernameNextButtonTap: Driver<Void>
         let passwordNextButtonTap: Driver<Void>
-        let popToLandingScene: Driver<Void>
-        let validatedEmail: Driver<ValidationResult>
+        let navigateBack: Driver<Void>
+        let validatedEmail: Driver<ValidationState>
         let loading: Driver<Bool>
     }
 
     func transform(input: Input) -> Output {
 
         let activityIndicator = ActivityIndicator()
-
-        let loading = activityIndicator.asDriver()
 
         let emailInputChanged = input.emailNextButtonTap
             .withLatestFrom(input.email)
@@ -50,23 +48,24 @@ final class SignUpViewModel: ViewModelType {
         let validatedEmail = input.emailNextButtonTap
             .withLatestFrom(input.email)
             .flatMapLatest { email in
-                self.validationService.validateEmail(email)
-                    .trackActivity(activityIndicator)
-                    .asDriver(onErrorJustReturn: .failed(message: "Error contacting server"))
+                self.validationService.validateEmail(email, activityIndicator)
+                    .asDriver(onErrorJustReturn: .error(message: "Error contacting server"))
             }
 
         let emailNextButtonTap = input.emailNextButtonTap
         let usernameNextButtonTap = input.usernameNextButtonTap
         let passwordNextButtonTap = input.passwordNextButtonTap
 
-        let popToLandingScene = input.emailBackButtonTap.flatMap {
+        let navigateBack = input.emailBackButtonTap.flatMap {
             self.sceneCoordinator.pop(animated: true)
         }
+
+        let loading = activityIndicator.asDriver()
 
         return Output(emailNextButtonTap: emailNextButtonTap,
                       usernameNextButtonTap: usernameNextButtonTap,
                       passwordNextButtonTap: passwordNextButtonTap,
-                      popToLandingScene: popToLandingScene,
+                      navigateBack: navigateBack,
                       validatedEmail: validatedEmail,
                       loading: loading)
     }

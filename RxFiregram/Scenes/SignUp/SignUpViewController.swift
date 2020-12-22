@@ -5,7 +5,6 @@
 //  Created by Justin on 2020-12-18.
 //
 
-import FirebaseAuth
 import RxCocoa
 import RxSwift
 import Then
@@ -23,20 +22,19 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         super.viewDidLoad()
         setupScrollView()
         setupFormViews()
-        setupBindings()
         bindViewModel()
-        emailView.textField.becomeFirstResponder()
+        emailView.formTextField.becomeFirstResponder()
         rx.hideKeyboardOnTap.drive().disposed(by: disposeBag)
     }
 
     func bindInput() -> Input {
 
-        let email = emailView.textField.rx.text.orEmpty.asDriver()
-        let password = passwordView.textField.rx.text.orEmpty.asDriver()
-        let username = usernameView.textField.rx.text.orEmpty.asDriver()
-        let emailNextButtonTap = emailView.nextButton.rx.tap.asDriver()
-        let usernameNextButtonTap = usernameView.nextButton.rx.tap.asDriver()
-        let passwordNextButtonTap = passwordView.nextButton.rx.tap.asDriver()
+        let email = emailView.formTextField.rx.text.orEmpty.asDriver()
+        let password = passwordView.formTextField.rx.text.orEmpty.asDriver()
+        let username = usernameView.formTextField.rx.text.orEmpty.asDriver()
+        let emailNextButtonTap = emailView.formButton.rx.tap.asDriver()
+        let usernameNextButtonTap = usernameView.formButton.rx.tap.asDriver()
+        let passwordNextButtonTap = passwordView.formButton.rx.tap.asDriver()
         let emailBackButtonTap = emailView.backButton.rx.tap.asDriver()
 
         return Input(username: username,
@@ -50,69 +48,64 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
     func bind(output: Output) {
 
-        output.popToLandingScene.drive().disposed(by: disposeBag)
+        output.loading
+            .drive(rx.userInteractionDisabled)
+            .disposed(by: disposeBag)
 
-        output.validatedEmail.drive(emailView.rx.validationResult).disposed(by: disposeBag)
+        output.loading
+            .drive(rx.endEditing)
+            .disposed(by: disposeBag)
 
-        output.validatedEmail.drive(onNext: { [weak self] result in
-            switch result {
-                case .validating:
-                    self?.view.endEditing(true)
-                case .ok:
-                    self?.scrollView.scrollForward()
-                    self?.usernameView.textField.becomeFirstResponder()
-                case .failed:
-                    self?.emailView.textField.becomeFirstResponder()
-            }
-        }).disposed(by: disposeBag)
-    }
+        // MARK: EmailView bindings
 
-    func setupBindings() {
+        output.navigateBack
+            .drive()
+            .disposed(by: disposeBag)
 
-        emailView.textField.rx.controlEvent(.editingChanged)
+        output.validatedEmail
+            .map(\.errorMessage)
+            .drive(emailView.errorLabel.rx.text)
+            .disposed(by: disposeBag)
+
+        output.validatedEmail
+            .map(\.borderWidth)
+            .drive(emailView.formTextField.rx.borderWidth)
+            .disposed(by: disposeBag)
+
+        output.validatedEmail
+            .drive(onNext: { [weak self] state in
+                switch state {
+                    case .success:
+                        self?.scroll(to: .usernameView, direction: .forward)
+                    case .error:
+                        self?.emailView.becomeFirstResponder()
+                }
+            })
+            .disposed(by: disposeBag)
+
+        emailView.formTextField
+            .rx
+            .controlEvent(.editingChanged)
             .asDriver()
             .drive(emailView.rx.editingChanged)
             .disposed(by: disposeBag)
 
-        emailView.textField.rx.isEmpty
-            .skip(1)
-            .drive(emailView.nextButton.rx.isDisabled)
+        emailView.formTextField
+            .rx
+            .isEmpty
+            .merge(with: output.loading)
+            .drive(emailView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
 
-        usernameView.textField.rx.controlEvent(.editingChanged)
-            .asDriver()
-            .drive(usernameView.rx.editingChanged)
+        // MARK: UsernameView bindings
+        
+        usernameView.formTextField
+            .rx
+            .isEmpty
+            .merge(with: output.loading)
+            .drive(emailView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
-
-        usernameView.textField.rx.isEmpty
-            .skip(1)
-            .drive(usernameView.nextButton.rx.isDisabled)
-            .disposed(by: disposeBag)
-
-        usernameView.backButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.scrollView.scrollBack()
-                self?.emailView.textField.becomeFirstResponder()
-
-            }).disposed(by: disposeBag)
-
-        passwordView.textField.rx.controlEvent(.editingChanged)
-            .asDriver()
-            .drive(passwordView.rx.editingChanged)
-            .disposed(by: disposeBag)
-
-        passwordView.textField.rx.isEmpty
-            .skip(1)
-            .drive(passwordView.nextButton.rx.isDisabled)
-            .disposed(by: disposeBag)
-
-        passwordView.backButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.scrollView.scrollBack()
-                self?.usernameView.textField.becomeFirstResponder()
-            }).disposed(by: disposeBag)
+        // MARK: PasswordView bindings
     }
 
     func setupScrollView() {
@@ -140,7 +133,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         emailView.topLabel.do {
             $0.text = "Please enter your email address"
         }
-        emailView.textField.do {
+        emailView.formTextField.do {
             $0.placeholder = "Email"
             $0.textContentType = .emailAddress
             $0.returnKeyType = .next
@@ -149,7 +142,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         passwordView.topLabel.do {
             $0.text = "Please enter your password"
         }
-        passwordView.textField.do {
+        passwordView.formTextField.do {
             $0.placeholder = "Password"
             $0.isSecureTextEntry = true
             $0.textContentType = .password
@@ -158,13 +151,46 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         usernameView.topLabel.do {
             $0.text = "Please enter your username"
         }
-        usernameView.textField.do {
+        usernameView.formTextField.do {
             $0.placeholder = "Username"
             $0.textContentType = .username
             $0.returnKeyType = .next
             $0.autocorrectionType = .yes
         }
     }
+
+    func scroll(to view: FormViewEnum, direction: ScrollDirection) {
+        let x = CGFloat(scrollView.contentOffset.x)
+        let width = UIScreen.main.bounds.width
+        UIView.animate(withDuration: 0.3, animations: {
+            switch direction {
+                case .forward:
+                    self.scrollView.contentOffset.x = x + width
+                case .back:
+                    self.scrollView.contentOffset.x = x - width
+            }
+        }, completion: { _ in
+            switch view {
+                case .usernameView:
+                    self.usernameView.formTextField.becomeFirstResponder()
+                case .emailView:
+                    self.emailView.formTextField.becomeFirstResponder()
+                case .passwordView:
+                    self.passwordView.formTextField.becomeFirstResponder()
+            }
+        })
+    }
+}
+
+enum FormViewEnum {
+    case emailView
+    case usernameView
+    case passwordView
+}
+
+enum ScrollDirection {
+    case forward
+    case back
 }
 
 extension Reactive where Base: FormView {
@@ -172,16 +198,28 @@ extension Reactive where Base: FormView {
     var editingChanged: Binder<Void> {
         Binder<Void>(base) { view, _ in
             view.errorLabel.text = ""
-            view.textField.layer.borderWidth = 0
+            view.formTextField.layer.borderWidth = 0
+        }
+    }
+}
+
+extension ValidationState {
+
+    var errorMessage: String {
+        switch self {
+            case .success:
+                return ""
+            case .error(let message):
+                return message
         }
     }
 
-    var validationResult: Binder<ValidationResult> {
-        Binder<ValidationResult>(base) { view, result in
-            view.nextButton.validationResult = result
-            view.textField.validationResult = result
-            view.errorLabel.validationResult = result
-            view.validationResult = result
+    var borderWidth: Int {
+        switch self {
+            case .success:
+                return 0
+            case .error:
+                return 1
         }
     }
 }

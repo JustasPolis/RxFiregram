@@ -7,19 +7,25 @@
 
 import UIKit
 
+enum ScrollDirection {
+    case forward
+    case back
+}
+
 extension UIScrollView {
 
-    func scrollForward() {
+    func scroll(_ direction: ScrollDirection, completion: @escaping () -> ()) {
         let x = CGFloat(contentOffset.x)
-        let viewWidth = UIScreen.main.bounds.width
-        let offset = x + viewWidth
-        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
-    }
-
-    func scrollBack() {
-        let x = CGFloat(contentOffset.x)
-        let viewWidth = UIScreen.main.bounds.width
-        let offset = x - viewWidth
-        setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+        let width = UIScreen.main.bounds.width
+        UIView.animate(withDuration: 0.3, animations: {
+            switch direction {
+                case .forward:
+                    self.contentOffset.x = x + width
+                case .back:
+                    self.contentOffset.x = x - width
+            }
+        }, completion: { _ in
+            completion()
+        })
     }
 }

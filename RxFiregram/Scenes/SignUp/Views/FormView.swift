@@ -10,28 +10,17 @@ import UIKit
 
 class FormView: UIView {
 
-    var validationResult: ValidationResult! {
-        didSet {
-            switch validationResult {
-                case .validating:
-                    isUserInteractionEnabled = false
-                default:
-                    isUserInteractionEnabled = true
-            }
-        }
-    }
-
     let errorLabel = ErrorLabel()
 
     let backButton = BackButton(type: .system)
 
-    let textField = FormTextField().then {
+    let formTextField = FormTextField().then {
         $0.textContentType = .username
         $0.returnKeyType = .next
         $0.autocorrectionType = .yes
     }
 
-    let nextButton = FormButton(type: .system).then {
+    let formButton = FormButton(type: .system).then {
         $0.setTitle("Next", for: .normal)
         $0.titleLabel?.font = .boldSystemFont(ofSize: 14)
     }
@@ -42,9 +31,9 @@ class FormView: UIView {
 
     lazy var formStackView = UIStackView(arrangedSubviews: [
         labelView,
-        textField,
+        formTextField,
         errorLabel,
-        nextButton
+        formButton
     ]).then {
         $0.axis = .vertical
         $0.spacing = 12
@@ -77,11 +66,11 @@ class FormView: UIView {
             $0.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         }
 
-        textField.do {
+        formTextField.do {
             $0.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.055).isActive = true
         }
 
-        nextButton.do {
+        formButton.do {
             $0.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.065).isActive = true
         }
 
