@@ -58,6 +58,10 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
         // MARK: EmailView bindings
 
+        output.loading
+            .drive(emailView.formButton.rx.isLoading)
+            .disposed(by: disposeBag)
+
         output.navigateBack
             .drive()
             .disposed(by: disposeBag)
@@ -98,13 +102,16 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
             .disposed(by: disposeBag)
 
         // MARK: UsernameView bindings
-        
+
         usernameView.formTextField
             .rx
             .isEmpty
             .merge(with: output.loading)
-            .drive(emailView.formButton.rx.isDisabled)
+            .drive(onNext: { value in
+                print(value)
+            })
             .disposed(by: disposeBag)
+
         // MARK: PasswordView bindings
     }
 
