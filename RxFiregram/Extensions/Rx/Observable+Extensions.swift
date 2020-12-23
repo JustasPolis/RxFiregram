@@ -8,7 +8,19 @@
 import RxCocoa
 import RxSwift
 
+private let errorMessage = "`drive*` family of methods can be only called from `MainThread`.\n" +
+    "This is required to ensure that the last replayed `Driver` element is delivered on `MainThread`.\n"
+
 extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+
+    public func drive<Observer: ObserverType>(_ observers: Observer...) -> Disposable where Observer.Element == Element {
+        MainScheduler.ensureRunningOnMainThread(errorMessage: errorMessage)
+        return self.asSharedSequence()
+            .asObservable()
+            .subscribe { e in
+                observers.forEach { $0.on(e) }
+            }
+    }
 
     func mapToVoid() -> SharedSequence<SharingStrategy, Void> {
         map { _ in }

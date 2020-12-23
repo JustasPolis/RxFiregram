@@ -36,6 +36,12 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         let usernameNextButtonTap = usernameView.formButton.rx.tap.asDriver()
         let passwordNextButtonTap = passwordView.formButton.rx.tap.asDriver()
         let emailBackButtonTap = emailView.backButton.rx.tap.asDriver()
+        let usernameBackButtonTap = usernameView.backButton.rx.tap.asDriver()
+
+        usernameBackButtonTap
+            .drive(onNext: { [weak self] in
+                self?.scroll(to: .emailView, direction: .back)
+            }).disposed(by: disposeBag)
 
         return Input(username: username,
                      password: password,
@@ -49,17 +55,10 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
     func bind(output: Output) {
 
         output.loading
-            .drive(rx.userInteractionDisabled)
-            .disposed(by: disposeBag)
-
-        output.loading
-            .drive(rx.endEditing)
-            .disposed(by: disposeBag)
-
-        // MARK: EmailView bindings
-
-        output.loading
-            .drive(emailView.formButton.rx.isLoading)
+            .drive(rx.endEditing,
+                   rx.userInteractionDisabled,
+                   emailView.formButton.rx.showActivityIndicator,
+                   usernameView.formButton.rx.showActivityIndicator)
             .disposed(by: disposeBag)
 
         output.navigateBack
@@ -97,7 +96,6 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         emailView.formTextField
             .rx
             .isEmpty
-            .merge(with: output.loading)
             .drive(emailView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
 
@@ -106,10 +104,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         usernameView.formTextField
             .rx
             .isEmpty
-            .merge(with: output.loading)
-            .drive(onNext: { value in
-                print(value)
-            })
+            .drive(usernameView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
 
         // MARK: PasswordView bindings
