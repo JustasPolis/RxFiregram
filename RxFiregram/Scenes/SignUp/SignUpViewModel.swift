@@ -21,18 +21,17 @@ final class SignUpViewModel: ViewModelType {
         let username: Driver<String>
         let password: Driver<String>
         let email: Driver<String>
-        let emailNextButtonTap: Driver<Void>
-        let usernameNextButtonTap: Driver<Void>
-        let passwordNextButtonTap: Driver<Void>
-        let emailBackButtonTap: Driver<Void>
+        let emailFormButtonTap: Driver<Void>
+        let usernameFormButtonTap: Driver<Void>
+        let passwordFormButtonTap: Driver<Void>
+        let backButtonTap: Driver<Void>
     }
 
     struct Output {
-        let emailNextButtonTap: Driver<Void>
-        let usernameNextButtonTap: Driver<Void>
-        let passwordNextButtonTap: Driver<Void>
         let navigateBack: Driver<Void>
         let validatedEmail: Driver<ValidationState>
+        let validatedUsername: Driver<ValidationState>
+        let validatedPassword: Driver<ValidationState>
         let loading: Driver<Bool>
     }
 
@@ -40,33 +39,36 @@ final class SignUpViewModel: ViewModelType {
 
         let activityIndicator = ActivityIndicator()
 
-        let emailInputChanged = input.emailNextButtonTap
-            .withLatestFrom(input.email)
-            .withPrevious()
-            .didChange()
-
-        let validatedEmail = input.emailNextButtonTap
+        let validatedEmail = input.emailFormButtonTap
             .withLatestFrom(input.email)
             .flatMapLatest { email in
-                self.validationService.validateEmail(email, activityIndicator)
+                self.validationService.validateEmail(email)
                     .asDriver(onErrorJustReturn: .error(message: "Error contacting server"))
             }
 
-        let emailNextButtonTap = input.emailNextButtonTap
-        let usernameNextButtonTap = input.usernameNextButtonTap
-        let passwordNextButtonTap = input.passwordNextButtonTap
+        let validatedUsername = input.usernameFormButtonTap
+            .withLatestFrom(input.username)
+            .flatMapLatest { username in
+                self.validationService.validateUsername(username)
+                    .asDriver(onErrorJustReturn: .error(message: "Error contacting server"))
+            }
 
-        let navigateBack = input.emailBackButtonTap.flatMap {
+        let validatedPassword = input.passwordFormButtonTap
+            .withLatestFrom(input.password)
+            .map { password in
+                self.validationService.validatePassword(password)
+            }
+
+        let navigateBack = input.backButtonTap.flatMap {
             self.sceneCoordinator.pop(animated: true)
         }
 
         let loading = activityIndicator.asDriver()
 
-        return Output(emailNextButtonTap: emailNextButtonTap,
-                      usernameNextButtonTap: usernameNextButtonTap,
-                      passwordNextButtonTap: passwordNextButtonTap,
-                      navigateBack: navigateBack,
+        return Output(navigateBack: navigateBack,
                       validatedEmail: validatedEmail,
+                      validatedUsername: validatedUsername,
+                      validatedPassword: validatedPassword,
                       loading: loading)
     }
 }

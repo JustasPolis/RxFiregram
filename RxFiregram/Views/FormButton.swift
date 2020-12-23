@@ -20,20 +20,7 @@ class FormButton: UIButton {
 
     override var isEnabled: Bool {
         didSet {
-            backgroundColor = setBackgroundColor()
-        }
-    }
-
-    func setBackgroundColor() -> UIColor {
-        switch (isEnabled, isHighlighted) {
-            case (true, true):
-                return Resources.Appearance.Color.lightBlue
-            case (true, false):
-                return Resources.Appearance.Color.blue
-            case (false, true):
-                return Resources.Appearance.Color.lightBlue
-            case (false, false):
-                return Resources.Appearance.Color.lightBlue
+            backgroundColor = isEnabled ? Resources.Appearance.Color.blue : Resources.Appearance.Color.lightBlue
         }
     }
 

@@ -15,6 +15,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
     private let emailView = FormView()
     private let usernameView = FormView()
     private let passwordView = FormView()
+    private let signUpView = SignUpView()
     private var scrollView = UIScrollView()
 
     override func viewDidLoad() {
@@ -32,37 +33,34 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
         let email = emailView.formTextField.rx.text.orEmpty.asDriver()
         let password = passwordView.formTextField.rx.text.orEmpty.asDriver()
         let username = usernameView.formTextField.rx.text.orEmpty.asDriver()
-        let emailNextButtonTap = emailView.formButton.rx.tap.asDriver()
-        let usernameNextButtonTap = usernameView.formButton.rx.tap.asDriver()
-        let passwordNextButtonTap = passwordView.formButton.rx.tap.asDriver()
+        let emailFormButtonTap = emailView.formButton.rx.tap.asDriver()
+        let usernameFormButtonTap = usernameView.formButton.rx.tap.asDriver()
+        let passwordFormButtonTap = passwordView.formButton.rx.tap.asDriver()
         let emailBackButtonTap = emailView.backButton.rx.tap.asDriver()
-        let usernameBackButtonTap = usernameView.backButton.rx.tap.asDriver()
-
-        usernameBackButtonTap
-            .drive(onNext: { [weak self] in
-                self?.scroll(to: .emailView, direction: .back)
-            }).disposed(by: disposeBag)
 
         return Input(username: username,
                      password: password,
                      email: email,
-                     emailNextButtonTap: emailNextButtonTap,
-                     usernameNextButtonTap: usernameNextButtonTap,
-                     passwordNextButtonTap: passwordNextButtonTap,
-                     emailBackButtonTap: emailBackButtonTap)
+                     emailFormButtonTap: emailFormButtonTap,
+                     usernameFormButtonTap: usernameFormButtonTap,
+                     passwordFormButtonTap: passwordFormButtonTap,
+                     backButtonTap: emailBackButtonTap)
     }
 
     func bind(output: Output) {
 
-        output.loading
-            .drive(rx.endEditing,
-                   rx.userInteractionDisabled,
-                   emailView.formButton.rx.showActivityIndicator,
-                   usernameView.formButton.rx.showActivityIndicator)
-            .disposed(by: disposeBag)
+        // MARK: EmailView Bindings
 
         output.navigateBack
             .drive()
+            .disposed(by: disposeBag)
+
+        output.validatedEmail
+            .map(\.validating)
+            .debug()
+            .drive(rx.userInteractionDisabled,
+                   emailView.formButton.rx.showActivityIndicator,
+                   emailView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
 
         output.validatedEmail
@@ -81,7 +79,9 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                     case .success:
                         self?.scroll(to: .usernameView, direction: .forward)
                     case .error:
-                        self?.emailView.becomeFirstResponder()
+                        self?.emailView.formTextField.becomeFirstResponder()
+                    case .validating:
+                        self?.emailView.formTextField.resignFirstResponder()
                 }
             })
             .disposed(by: disposeBag)
@@ -101,18 +101,113 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
 
         // MARK: UsernameView bindings
 
+        output.validatedUsername
+            .map(\.validating)
+            .debug()
+            .drive(rx.userInteractionDisabled,
+                   usernameView.formButton.rx.showActivityIndicator,
+                   usernameView.formButton.rx.isDisabled)
+            .disposed(by: disposeBag)
+
+        output.validatedUsername
+            .map(\.errorMessage)
+            .drive(usernameView.errorLabel.rx.text)
+            .disposed(by: disposeBag)
+
+        output.validatedUsername
+            .map(\.borderWidth)
+            .drive(usernameView.formTextField.rx.borderWidth)
+            .disposed(by: disposeBag)
+
+        output.validatedUsername
+            .drive(onNext: { [weak self] state in
+                switch state {
+                    case .success:
+                        self?.scroll(to: .passwordView, direction: .forward)
+                    case .error:
+                        self?.usernameView.formTextField.becomeFirstResponder()
+                    case .validating:
+                        self?.usernameView.formTextField.resignFirstResponder()
+                }
+            })
+            .disposed(by: disposeBag)
+
+        usernameView.formTextField
+            .rx
+            .controlEvent(.editingChanged)
+            .asDriver()
+            .drive(usernameView.rx.editingChanged)
+            .disposed(by: disposeBag)
+
         usernameView.formTextField
             .rx
             .isEmpty
             .drive(usernameView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
 
+        usernameView.backButton
+            .rx
+            .tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.scroll(to: .emailView, direction: .back)
+            }).disposed(by: disposeBag)
+
         // MARK: PasswordView bindings
+
+        output.validatedPassword
+            .map(\.errorMessage)
+            .drive(passwordView.errorLabel.rx.text)
+            .disposed(by: disposeBag)
+
+        output.validatedPassword
+            .map(\.borderWidth)
+            .drive(passwordView.formTextField.rx.borderWidth)
+            .disposed(by: disposeBag)
+
+        output.validatedPassword
+            .filter { $0 == .success }
+            .drive(onNext: { [weak self] _ in
+                self?.passwordView.formTextField.resignFirstResponder()
+                self?.scroll(to: .signUpView, direction: .forward)
+            })
+            .disposed(by: disposeBag)
+
+        passwordView.formTextField
+            .rx
+            .controlEvent(.editingChanged)
+            .asDriver()
+            .drive(passwordView.rx.editingChanged)
+            .disposed(by: disposeBag)
+
+        passwordView.formTextField
+            .rx
+            .isEmpty
+            .drive(passwordView.formButton.rx.isDisabled)
+            .disposed(by: disposeBag)
+
+        passwordView.backButton
+            .rx
+            .tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.scroll(to: .usernameView, direction: .back)
+            }).disposed(by: disposeBag)
+
+        // MARK: SignUpView bindings
+
+        signUpView.backButton
+            .rx
+            .tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.scroll(to: .passwordView, direction: .back)
+            }).disposed(by: disposeBag)
     }
 
     func setupScrollView() {
 
-        let views = [emailView, usernameView, passwordView, UIView()]
+        let views = [emailView, usernameView, passwordView, signUpView]
 
         scrollView.do {
             $0.add(to: view)
@@ -179,20 +274,11 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType {
                     self.emailView.formTextField.becomeFirstResponder()
                 case .passwordView:
                     self.passwordView.formTextField.becomeFirstResponder()
+                case .signUpView:
+                    return
             }
         })
     }
-}
-
-enum FormViewEnum {
-    case emailView
-    case usernameView
-    case passwordView
-}
-
-enum ScrollDirection {
-    case forward
-    case back
 }
 
 extension Reactive where Base: FormView {
@@ -205,23 +291,14 @@ extension Reactive where Base: FormView {
     }
 }
 
-extension ValidationState {
+enum FormViewEnum {
+    case emailView
+    case usernameView
+    case passwordView
+    case signUpView
+}
 
-    var errorMessage: String {
-        switch self {
-            case .success:
-                return ""
-            case .error(let message):
-                return message
-        }
-    }
-
-    var borderWidth: Int {
-        switch self {
-            case .success:
-                return 0
-            case .error:
-                return 1
-        }
-    }
+enum ScrollDirection {
+    case forward
+    case back
 }
