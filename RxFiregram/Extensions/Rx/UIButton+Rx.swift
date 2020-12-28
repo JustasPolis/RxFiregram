@@ -23,6 +23,7 @@ extension Reactive where Base: FormButton {
 extension Reactive where Base: UIButton {
 
     var isDisabled: Binder<Bool> {
+
         Binder(base) { button, isDisabled in
             button.isEnabled = !isDisabled
         }

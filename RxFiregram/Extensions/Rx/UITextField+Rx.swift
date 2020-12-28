@@ -16,11 +16,18 @@ extension Reactive where Base: UITextField {
         }
     }
 
-    public var isEmpty: Driver<Bool> {
+    var isEmpty: Driver<Bool> {
         self.base.rx
             .text
             .orEmpty
             .map(\.isEmpty)
+            .distinctUntilChanged()
             .asDriverOnErrorJustComplete()
+    }
+
+    var returnKeyIsDisabled: Binder<Bool> {
+        Binder(base) { textField, value in
+            textField.enablesReturnKeyAutomatically = value
+        }
     }
 }

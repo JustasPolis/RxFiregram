@@ -33,5 +33,7 @@ class FormTextField: UITextField {
         backgroundColor = UIColor(white: 0, alpha: 0.03)
         font = UIFont.systemFont(ofSize: 14)
         autocapitalizationType = .none
+        returnKeyType = .next
+        enablesReturnKeyAutomatically = true
     }
 }

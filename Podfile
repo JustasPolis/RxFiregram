@@ -12,7 +12,7 @@ target 'RxFiregram' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod "RxDataSources", :binary => true
-  pod "Resolver", :binary => true
+  pod 'Resolver', '1.2.1'
   pod 'RxSwiftExt', :binary => true
   pod 'CodableFirebase', :binary => true
   pod 'RxFirebase/Database'

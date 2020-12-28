@@ -14,8 +14,6 @@ import RxSwiftExt
 final class SignInViewModel: ViewModelType {
 
     @Injected private var sceneCoordinator: SceneCoordinatorType
-    @Injected private var validationService: ValidationServiceType
-    @Injected private var firebaseService: FirebaseServiceType
 
     struct Input {
         let backButtonTap: Driver<Void>
@@ -27,8 +25,8 @@ final class SignInViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
 
-        let popToLandingScene = input.backButtonTap.flatMap {
-            self.sceneCoordinator.pop(animated: true)
+        let popToLandingScene = input.backButtonTap.flatMap { [sceneCoordinator] in
+            sceneCoordinator.pop(animated: true)
         }
         return Output(popToLandingScene: popToLandingScene)
     }

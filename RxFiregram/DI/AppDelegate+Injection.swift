@@ -9,7 +9,7 @@ import Resolver
 
 extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
-        register { SceneCoordinator() as SceneCoordinatorType }.scope(application)
+        register { SceneCoordinator() as SceneCoordinatorType }.scope(shared)
         register { ValidationService() as ValidationServiceType }
         #if TEST
         register { MockFirebaseService() as FirebaseServiceType }

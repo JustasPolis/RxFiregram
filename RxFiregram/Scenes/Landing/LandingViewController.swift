@@ -32,6 +32,7 @@ class LandingViewController: ViewController<LandingViewModel>, BindableType {
 
         let signUpButtonTap = landingView.signUpButton.rx.tap.asDriver()
         let signInButtonTap = landingView.signInButton.rx.tap.asDriver()
+        
         return Input(signUpButtonTap: signUpButtonTap, signInButtonTap: signInButtonTap)
     }
 

@@ -25,7 +25,8 @@ class ValidationService: ValidationServiceType {
                 else {
                     return .error(message: "Email is already taken.")
                 }
-            }.startWith(.validating)
+            }
+            .startWith(.validating)
     }
 
     func validateUsername(_ username: String) -> Observable<ValidationState> {

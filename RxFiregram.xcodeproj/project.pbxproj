@@ -10,6 +10,8 @@
 		71A150626BD73AF957B8D975 /* Pods_RxFiregram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0A37AC590F601814F0FD8C9 /* Pods_RxFiregram.framework */; };
 		7F590165A924071C3B10ED20 /* Pods_RxFiregramTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F666251294E1DA6E17CD48 /* Pods_RxFiregramTests.framework */; };
 		84AF3673CAD83D847414ABF2 /* Pods_RxFiregram_RxFiregramUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 673D89F9A1C757A952DEF813 /* Pods_RxFiregram_RxFiregramUITests.framework */; };
+		D00169172593916200232741 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00169162593916200232741 /* HomeViewController.swift */; };
+		D001691F259391B200232741 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D001691E259391B200232741 /* HomeViewModel.swift */; };
 		D00554482579D48E00EB5B50 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554472579D48E00EB5B50 /* Scene.swift */; };
 		D005544D2579D49800EB5B50 /* SceneTransitionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D005544C2579D49800EB5B50 /* SceneTransitionType.swift */; };
 		D00554522579D4A300EB5B50 /* SceneCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00554512579D4A300EB5B50 /* SceneCoordinatorType.swift */; };
@@ -88,6 +90,8 @@
 		804DB5C3A037838A487E2A83 /* Pods-RxFiregram-RxFiregramUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxFiregram-RxFiregramUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxFiregram-RxFiregramUITests/Pods-RxFiregram-RxFiregramUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A21C783A46DC3863B7973274 /* Pods-RxFiregram-RxFiregramUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxFiregram-RxFiregramUITests.release.xcconfig"; path = "Target Support Files/Pods-RxFiregram-RxFiregramUITests/Pods-RxFiregram-RxFiregramUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B85088B9725AFF3D893367F2 /* Pods-RxFiregramTests.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxFiregramTests.testing.xcconfig"; path = "Target Support Files/Pods-RxFiregramTests/Pods-RxFiregramTests.testing.xcconfig"; sourceTree = "<group>"; };
+		D00169162593916200232741 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D001691E259391B200232741 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		D00554472579D48E00EB5B50 /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		D005544C2579D49800EB5B50 /* SceneTransitionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneTransitionType.swift; sourceTree = "<group>"; };
 		D00554512579D4A300EB5B50 /* SceneCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneCoordinatorType.swift; sourceTree = "<group>"; };
@@ -204,6 +208,15 @@
 				31F666251294E1DA6E17CD48 /* Pods_RxFiregramTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D00169152593914A00232741 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D00169162593916200232741 /* HomeViewController.swift */,
+				D001691E259391B200232741 /* HomeViewModel.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		D00554772579D60800EB5B50 /* Protocols */ = {
@@ -368,6 +381,7 @@
 		D0AD667A25772E7800AF6BC1 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D00169152593914A00232741 /* Home */,
 				D0342E06258B003500D75599 /* Landing */,
 				D04A22AA257C204D00BEDED2 /* SignIn */,
 				D0AD667F25772ECB00AF6BC1 /* SignUp */,
@@ -711,9 +725,11 @@
 				D0342E3B258C3FA600D75599 /* BackButton.swift in Sources */,
 				D04A22A1257C184300BEDED2 /* Resources.swift in Sources */,
 				D00554862579D6FE00EB5B50 /* UIViewController+Rx.swift in Sources */,
+				D00169172593916200232741 /* HomeViewController.swift in Sources */,
 				D02F9C84257F030500F58B35 /* ActivityIndicator.swift in Sources */,
 				D02F97A2257D182E00F58B35 /* MockFirebaseService.swift in Sources */,
 				D0342E33258C2F0D00D75599 /* SignUpViewModel.swift in Sources */,
+				D001691F259391B200232741 /* HomeViewModel.swift in Sources */,
 				D04A22B9257C27C300BEDED2 /* FirebaseService.swift in Sources */,
 				D0342E84258E349200D75599 /* SignInView.swift in Sources */,
 				D0342E2E258C2E8600D75599 /* SignUpViewController.swift in Sources */,

@@ -14,11 +14,7 @@ class FormView: UIView {
 
     let backButton = BackButton(type: .system)
 
-    let formTextField = FormTextField().then {
-        $0.textContentType = .username
-        $0.returnKeyType = .next
-        $0.autocorrectionType = .yes
-    }
+    let formTextField = FormTextField()
 
     let formButton = FormButton(type: .system).then {
         $0.setTitle("Next", for: .normal)

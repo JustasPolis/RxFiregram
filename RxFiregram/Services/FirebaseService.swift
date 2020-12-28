@@ -51,6 +51,7 @@ class FirebaseService: FirebaseServiceType {
     }
 
     func isUsernameAvailable(_ username: String) -> Observable<Bool> {
+
         Database.database()
             .reference()
             .child("users")
@@ -60,6 +61,7 @@ class FirebaseService: FirebaseServiceType {
             .observeSingleEvent(.value)
             .asObservable()
             .map { !$0.exists() }
+            .timeout(.seconds(15), scheduler: MainScheduler.instance)
     }
 
     func isEmailAvailable(_ email: String) -> Observable<Bool> {
@@ -72,5 +74,6 @@ class FirebaseService: FirebaseServiceType {
             .observeSingleEvent(.value)
             .asObservable()
             .map { !$0.exists() }
+            .timeout(.seconds(15), scheduler: MainScheduler.instance)
     }
 }
