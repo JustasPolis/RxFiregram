@@ -19,6 +19,8 @@ enum Scene {
     case offline
 }
 
+// resolver viewmodels padaryt
+
 extension Scene: TargetScene {
     var transition: SceneTransitionType {
         switch self {
@@ -27,20 +29,17 @@ extension Scene: TargetScene {
                 vc.view.backgroundColor = .blue
                 return .root(vc)
             case .signUp:
-                let signUpVM = SignUpViewModel()
-                let signUpVC = SignUpViewController(viewModel: signUpVM)
+                let signUpVC = SignUpViewController()
                 return .push(signUpVC)
             case .signIn:
-                let signInVM = SignInViewModel()
-                let signInVC = SignInViewController(viewModel: signInVM)
+                let signInVC = SignInViewController()
                 return .push(signInVC)
             case .landing:
-                let landingVM = LandingViewModel()
-                let landingVC = UINavigationController(rootViewController: LandingViewController(viewModel: landingVM))
+                let landingVC = UINavigationController(rootViewController: LandingViewController())
                 return .root(landingVC)
             case .home:
                 let homeVM = HomeViewModel()
-                let homeVC = UINavigationController(rootViewController: HomeViewController(viewModel: homeVM))
+                let homeVC = UINavigationController(rootViewController: HomeViewController())
 
                 let vc = UIViewController()
 

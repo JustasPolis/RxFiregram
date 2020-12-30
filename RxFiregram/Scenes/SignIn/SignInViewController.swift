@@ -5,11 +5,19 @@
 //  Created by Justin on 2020-12-05.
 //
 
+import Resolver
+import RxCocoa
+import RxSwift
 import UIKit
 
-class SignInViewController: ViewController<SignInViewModel>, BindableType {
+class SignInViewController: UIViewController {
 
-    private var signInView: SignInView!
+    @Injected private var viewModel: SignInViewModel
+    typealias Input = SignInViewModel.Input
+    typealias Output = SignInViewModel.Output
+
+    let disposeBag = DisposeBag()
+    let signInView = SignInView()
 
     override func viewDidLoad() {
         setupKeyboardEvents()
@@ -18,18 +26,24 @@ class SignInViewController: ViewController<SignInViewModel>, BindableType {
     }
 
     override func loadView() {
-        signInView = SignInView()
         view = signInView
     }
 
-    func bindInput() -> Input {
+    private func bindViewModel() {
+
+        let input = bindInput()
+        let output = viewModel.transform(input: input)
+        bind(output)
+    }
+
+    private func bindInput() -> Input {
 
         let backButtonTap = signInView.backButton.rx.tap.asDriver()
 
         return Input(backButtonTap: backButtonTap)
     }
 
-    func bind(output: Output) {
+    private func bind(_ output: Output) {
         output.popToLandingScene.drive().disposed(by: disposeBag)
     }
 

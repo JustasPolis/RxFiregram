@@ -5,37 +5,48 @@
 //  Created by Justin on 2020-12-18.
 //
 
+import Resolver
 import RxCocoa
 import RxSwift
 import Then
 import UIKit
 
-class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITextFieldDelegate {
+final class SignUpViewController: UIViewController, UITextFieldDelegate {
 
-    private let emailView = FormView()
-    private let usernameView = FormView()
-    private let passwordView = FormView()
-    private let signUpView = SignUpView()
-    private var scrollView = UIScrollView()
-    var test = false
+    @Injected private var viewModel: SignUpViewModel
+
+    typealias Input = SignUpViewModel.Input
+    typealias Output = SignUpViewModel.Output
+
+    let disposeBag = DisposeBag()
+    let scrollView = UIScrollView()
+    let emailView = FormView()
+    let usernameView = FormView()
+    let passwordView = FormView()
+    let signUpView = SignUpView()
+
+    private(set) var shouldEndEditing = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .white
         setupScrollView()
         setupFormViews()
         bindViewModel()
-        emailView.formTextField.becomeFirstResponder()
         rx.hideKeyboardOnTap.drive().disposed(by: disposeBag)
+        emailView.formTextField.becomeFirstResponder()
         emailView.formTextField.delegate = self
     }
 
-    func bindInput() -> Input {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        shouldEndEditing
+    }
+
+    private func bindInput() -> Input {
 
         let email = emailView.formTextField.rx.text.orEmpty.asDriver()
         let password = passwordView.formTextField.rx.text.orEmpty.asDriver()
         let username = usernameView.formTextField.rx.text.orEmpty.asDriver()
-
         let emailFormButtonTap = Driver.merge(emailView.formButton.rx.tap.asDriver(), emailView.formTextField.rx.controlEvent(.editingDidEndOnExit).asDriver())
         let usernameFormButtonTap = usernameView.formButton.rx.tap.asDriver()
         let passwordFormButtonTap = passwordView.formButton.rx.tap.asDriver()
@@ -52,14 +63,9 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITex
                      backButtonTap: emailBackButtonTap)
     }
 
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        print(test)
-        return test
-    }
+    private func bind(_ output: Output) {
 
-    func bind(output: Output) {
-
-        // MARK: EmailView Bindings
+        //MARK: EmailView Bindings
 
         output.navigateBack
             .drive()
@@ -71,6 +77,12 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITex
                    emailView.formButton.rx.showActivityIndicator,
                    emailView.formButton.rx.isDisabled)
             .disposed(by: disposeBag)
+
+        output.validatedEmail
+            .map(\.validating)
+            .drive(onNext: { [weak self] isValidating in
+                self?.shouldEndEditing = isValidating
+            }).disposed(by: disposeBag)
 
         output.validatedEmail
             .map(\.errorMessage)
@@ -86,13 +98,11 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITex
             .drive(onNext: { [weak self] state in
                 switch state {
                     case .success:
-                        self?.test = false
                         self?.scroll(to: .usernameView, direction: .forward)
                     case .error, .networkError:
-                        self?.test = false
                         self?.emailView.formTextField.becomeFirstResponder()
                     case .validating:
-                        self?.test = true
+                        self?.emailView.formTextField.resignFirstResponder()
                 }
             })
             .disposed(by: disposeBag)
@@ -226,7 +236,14 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITex
         output.signUp.drive().disposed(by: disposeBag)
     }
 
-    func setupScrollView() {
+    private func bindViewModel() {
+
+        let input = bindInput()
+        let output = viewModel.transform(input: input)
+        bind(output)
+    }
+
+    private func setupScrollView() {
 
         let views = [emailView, usernameView, passwordView, signUpView]
 
@@ -246,7 +263,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITex
         }
     }
 
-    func setupFormViews() {
+    private func setupFormViews() {
 
         emailView.topLabel.do {
             $0.text = "Please enter your email address"
@@ -275,7 +292,7 @@ class SignUpViewController: ViewController<SignUpViewModel>, BindableType, UITex
         }
     }
 
-    func scroll(to view: FormViewEnum, direction: ScrollDirection) {
+    private func scroll(to view: FormViewEnum, direction: ScrollDirection) {
         let x = CGFloat(scrollView.contentOffset.x)
         let width = UIScreen.main.bounds.width
         UIView.animate(withDuration: 0.3, animations: {
@@ -320,79 +337,4 @@ enum FormViewEnum {
 enum ScrollDirection {
     case forward
     case back
-}
-
-open class RxTextFieldDelegateProxy:
-    DelegateProxy<UITextField, UITextFieldDelegate>,
-    DelegateProxyType,
-    UITextFieldDelegate
-{
-
-    public static func currentDelegate(for object: UITextField) -> UITextFieldDelegate? {
-        object.delegate
-    }
-
-    public static func setCurrentDelegate(_ delegate: UITextFieldDelegate?, to object: UITextField) {
-        object.delegate = delegate
-    }
-
-    /// Typed parent object.
-    public private(set) weak var textField: UITextField?
-
-    /// - parameter textfield: Parent object for delegate proxy.
-    public init(textField: ParentObject) {
-        self.textField = textField
-        super.init(parentObject: textField, delegateProxy: RxTextFieldDelegateProxy.self)
-    }
-
-    // Register known implementations
-    public static func registerKnownImplementations() {
-        register(make: RxTextFieldDelegateProxy.init)
-    }
-
-    // MARK: delegate methods
-
-    /// For more information take a look at `DelegateProxyType`.
-    @objc open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        forwardToDelegate()?.textFieldShouldReturn?(textField) ?? true
-    }
-
-    @objc open func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        forwardToDelegate()?.textFieldShouldClear?(textField) ?? true
-    }
-}
-
-extension UITextField {
-
-    /// Factory method that enables subclasses to implement their own `delegate`.
-    ///
-    /// - returns: Instance of delegate proxy that wraps `delegate`.
-    public func createRxDelegateProxy() -> RxTextFieldDelegateProxy {
-        RxTextFieldDelegateProxy(textField: self)
-    }
-}
-
-extension Reactive where Base: UITextField {
-
-    /// Reactive wrapper for `delegate`.
-    ///
-    /// For more information take a look at `DelegateProxyType` protocol documentation.
-    public var delegate: DelegateProxy<UITextField, UITextFieldDelegate> {
-        RxTextFieldDelegateProxy.proxy(for: base)
-    }
-
-    /// Reactive wrapper for `delegate` message.
-    public var shouldReturn: ControlEvent<Void> {
-        let source = delegate.rx.methodInvoked(#selector(UITextFieldDelegate.textFieldShouldReturn))
-            .map { _ in }
-
-        return ControlEvent(events: source)
-    }
-
-    public var shouldClear: ControlEvent<Void> {
-        let source = delegate.rx.methodInvoked(#selector(UITextFieldDelegate.textFieldShouldClear))
-            .map { _ in }
-
-        return ControlEvent(events: source)
-    }
 }

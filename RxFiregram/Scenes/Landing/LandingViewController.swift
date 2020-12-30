@@ -5,13 +5,19 @@
 //  Created by Justin on 2020-12-19.
 //
 
+import Resolver
 import RxCocoa
 import RxSwift
 import UIKit
 
-class LandingViewController: ViewController<LandingViewModel>, BindableType {
+class LandingViewController: UIViewController {
 
-    private var landingView: LandingView!
+    @Injected private var viewModel: LandingViewModel
+    typealias Input = LandingViewModel.Input
+    typealias Output = LandingViewModel.Output
+
+    let landingView = LandingView()
+    let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +25,6 @@ class LandingViewController: ViewController<LandingViewModel>, BindableType {
     }
 
     override func loadView() {
-        landingView = LandingView()
         view = landingView
     }
 
@@ -28,18 +33,24 @@ class LandingViewController: ViewController<LandingViewModel>, BindableType {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
-    func bindInput() -> Input {
+    private func bindInput() -> Input {
 
         let signUpButtonTap = landingView.signUpButton.rx.tap.asDriver()
         let signInButtonTap = landingView.signInButton.rx.tap.asDriver()
-        
+
         return Input(signUpButtonTap: signUpButtonTap, signInButtonTap: signInButtonTap)
     }
 
-    func bind(output: Output) {
+    private func bind(_ output: Output) {
         disposeBag.insert(
             output.navigateToSignInScene.drive(),
             output.navigateToSignUpScene.drive()
         )
+    }
+
+    private func bindViewModel() {
+        let input = bindInput()
+        let output = viewModel.transform(input: input)
+        bind(output)
     }
 }

@@ -9,10 +9,10 @@ target 'RxFiregram' do
  
   pod 'Then', :binary => true
   pod 'SDWebImage', :binary => true
-  pod 'RxSwift'
-  pod 'RxCocoa'
+  pod 'RxSwift', :binary => true
+  pod 'RxCocoa', :binary => true
   pod "RxDataSources", :binary => true
-  pod 'Resolver', '1.2.1'
+  pod 'Resolver', '1.2.1', :binary => true
   pod 'RxSwiftExt', :binary => true
   pod 'CodableFirebase', :binary => true
   pod 'RxFirebase/Database'
@@ -21,16 +21,16 @@ target 'RxFiregram' do
   pod 'Firebase/Auth'          
   pod 'Firebase/Database'    
   pod 'Firebase/Storage'
-  
+ 
  
   target 'RxFiregramTests' do
-     inherit! :search_paths
+    inherit! :search_paths
     pod 'RxBlocking'
     pod 'RxTest'
   end
 
   target 'RxFiregramUITests' do
-    # Pods for testing
+    inherit! :search_paths
     pod 'RxBlocking'
     pod 'RxTest'
   end
