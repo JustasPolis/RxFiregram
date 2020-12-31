@@ -33,9 +33,10 @@ final class SignUpViewController: UIViewController, UITextFieldDelegate {
         setupScrollView()
         setupFormViews()
         bindViewModel()
-        rx.hideKeyboardOnTap.drive().disposed(by: disposeBag)
-        emailView.formTextField.becomeFirstResponder()
-        emailView.formTextField.delegate = self
+
+        rx.hideKeyboardOnTap
+            .drive()
+            .disposed(by: disposeBag)
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -65,7 +66,7 @@ final class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     private func bind(_ output: Output) {
 
-        //MARK: EmailView Bindings
+        // MARK: EmailView Bindings
 
         output.navigateBack
             .drive()
@@ -224,16 +225,10 @@ final class SignUpViewController: UIViewController, UITextFieldDelegate {
                 self?.scroll(to: .passwordView, direction: .back)
             }).disposed(by: disposeBag)
 
-        signUpView.formButton
-            .rx
-            .tap
-            .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.scrollView.contentOffset.x = self?.view.frame.width ?? 0
-            }).disposed(by: disposeBag)
-
         output.error.drive().disposed(by: disposeBag)
+        output.repeatUsernameValidation.drive().disposed(by: disposeBag)
         output.signUp.drive().disposed(by: disposeBag)
+        output.loading.drive().disposed(by: disposeBag)
     }
 
     private func bindViewModel() {
@@ -272,6 +267,8 @@ final class SignUpViewController: UIViewController, UITextFieldDelegate {
             $0.placeholder = "Email"
             $0.textContentType = .emailAddress
             $0.autocorrectionType = .no
+            $0.delegate = self
+            $0.becomeFirstResponder()
         }
         passwordView.topLabel.do {
             $0.text = "Please enter your password"
